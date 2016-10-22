@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        <title>Maze Generator</title>
+        <link rel="stylesheet" type="text/css" href="css/indexstyle.css">
+
+        <script src="js/mazegenerator.js"></script>
+    </head>
+
+    <body>
+        <!-- TODO: Add inputs that change canvas height/width -->
+        <canvas id="canvas"></canvas>
+
+        <!-- TODO: Add button to generate new maze -->
+        <form action="javascript:updateMaze()">
+            Height: <input type="text" value="100" id="cellHeight" maxlength="4" onkeypress='return numericOnly();'><br>
+            Width: <input type="text" value="100" id="cellWidth" maxlength="4" onkeypress='return numericOnly();'><br>
+            <input type="submit" value="Generate Maze">
+        </form>
+    </body>
+</html>
