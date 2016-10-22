@@ -1,4 +1,5 @@
-const CELL_LENGTH = 4; // in px
+const CELL_LENGTH = 10; // in px
+const USER_COLOR = "red";
 
 var maze = [];
 var userLocation = {x:0, y:0};
@@ -10,20 +11,23 @@ function numericOnly() {
     return event.charCode >= 48 && event.charCode <= 57;
 }
 
-function Cell(x, y) {
+function Cell(type, x, y, color) {
 
-    this.type = "empty";
+    this.type = type;
     this.x = x;
     this.y = y;
+    this.color = color;
 
-    this.draw = function(drawColor = this.color) {
-
+    this.draw = function(ctx, drawColor = this.color) {
+        ctx.fillStyle = drawColor;
+        ctx.fillRect(this.x * CELL_LENGTH, this.y * CELL_LENGTH, CELL_LENGTH, CELL_LENGTH);
     }
 }
-Cell.prototype.color = "white";
 
-function updateCanvasSize() {
-    var canvas = document.getElementById("canvas");
+function makeEmptyCell(x, y) {return new Cell("empty", x, y, "white")}
+function makeObstacleCell(x, y) {return new Cell("obstacle", x, y, "black")}
+
+function updateCanvasSize(canvas) {
     canvas.width = CELL_LENGTH * cols;
     canvas.height = CELL_LENGTH * rows;
 }
@@ -35,7 +39,10 @@ function generateMaze() {
     for(row=0; row<rows; row++) {
         var newRow = [];
         for(col=0; col<cols; col++) {
-
+            if((row + col) % 3 == 0)
+                newRow.push(makeObstacleCell(col, row));
+            else
+                newRow.push(makeEmptyCell(col, row));
         }
         newMaze.push(newRow);
     }
@@ -43,26 +50,31 @@ function generateMaze() {
     return newMaze;
 }
 
-function drawMaze() {
+function drawMaze(ctx) {
     for(row=0; row<rows; row++) {
         for(col=0; col<cols; col++) {
-
+            maze[row][col].draw(ctx);
         }
     }
 }
 
+function updateDrawnPlayerPosition(ctx) {
+    maze[userLocation.y][userLocation.x].draw(ctx, USER_COLOR);
+}
+
 function updateMaze() {
 
-    cols = document.getElementById('cellWidth').value;
-    rows = document.getElementById('cellHeight').value;
+    cols = document.getElementById("cellWidth").value;
+    rows = document.getElementById("cellHeight").value;
 
-    updateCanvasSize();
+    var canvas = document.getElementById("canvas");
+    updateCanvasSize(canvas);
 
     maze = generateMaze();
 
-    // TODO: Draw maze walls and clear empty space
-
-    // TODO: Set userLocation to start position
+    var ctx = canvas.getContext("2d");
+    drawMaze(ctx);
+    updateDrawnPlayerPosition(ctx);
 }
 
 window.onload = updateMaze;
