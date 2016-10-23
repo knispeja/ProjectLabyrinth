@@ -196,16 +196,21 @@ function clearDrawnPlayerPosition(ctx) {
     getCellAtUserLocation().draw(ctx);
 }
 
+// Runs every TIME_PER_CELL_MS
 function reactToUserInput() {
 
+    // Ignore conflicting input
     if(!((up && down) || (left && right))) {
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
 
+        // Remove player from old position
         clearDrawnPlayerPosition(ctx);
 
         var oldCell = getCellAtUserLocation();
         var newCell;
+
+        // Determine new location if there is one...
         if(up && userLocation.y != 0) newCell = maze[userLocation.y - 1][userLocation.x];
         else if(down && userLocation.y != cols - 1) newCell = maze[userLocation.y + 1][userLocation.x];
 
@@ -217,10 +222,15 @@ function reactToUserInput() {
             if(newCell && !newCell.isObstacle()) userLocation = {x: newCell.x, y: newCell.y};
         }
 
+        // Player moved to a valid space
         if(newCell && !newCell.isObstacle() && !newCell.equals(oldCell)) {
+
+            // Update steps and leave a trail behind
             stepsTaken++;
             oldCell.color = "orange";
             oldCell.draw(ctx);
+
+            // Player reached the objective
             if(newCell.isObjective()) {
                 var message = "Congratulations, you solved the maze!";
                 message += "\nSteps taken:  " + stepsTaken;
@@ -229,14 +239,16 @@ function reactToUserInput() {
             }
         }
 
+        // Draw player at new position
         updateDrawnPlayerPosition(ctx);
     }
 
+    // Call this function again
     setTimeout(reactToUserInput, TIME_PER_CELL_MS);
 }
 
 function resetMaze() {
-    graph, up, down, left, right = false;
+    up = down = left = right = false;
     optimalPath = 0;
     stepsTaken = 0;
 }
@@ -275,6 +287,7 @@ function updateMaze() {
     solveMaze(false);
 }
 
+// Runs on load
 function init() {
     updateMaze();
     reactToUserInput();
@@ -283,6 +296,9 @@ function init() {
 function onKeyDown(event) {
     var keyCode = event.keyCode;
     switch(keyCode){
+        case 13:  //enter
+            updateMaze();
+            break;
         case 38:  //up arrow
         case 87:  //w
             event.preventDefault();

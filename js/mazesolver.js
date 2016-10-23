@@ -1,5 +1,3 @@
-var graph = false;
-
 function addCellToNeighbors(cell, possibleNeighbor) {
     if(possibleNeighbor) {
         if(cell.isObstacle()) cell.neighbors.push(possibleNeighbor);
@@ -9,8 +7,6 @@ function addCellToNeighbors(cell, possibleNeighbor) {
 }
 
 function generateGraphFromMaze() {
-    if(graph) return; // graph already generated
-
     for(var row=0; row<rows; row++) {
         for(var col=0; col<cols; col++) {
 
@@ -38,8 +34,6 @@ function generateGraphFromMaze() {
             addCellToNeighbors(cell, maze[row][col+1]);
         }
     }
-
-    graph = true;
 }
 
 function solveMazeWithAStar(startCell, endCell, ctx) {
