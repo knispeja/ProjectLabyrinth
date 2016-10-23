@@ -10,9 +10,9 @@ var down;
 var left;
 var right;
 
-var animating = false;
 var maze = [];
 var userLocation = {x:0, y:0};
+var objectiveCell;
 var cols;
 var rows;
 
@@ -26,10 +26,13 @@ function Cell(type, x, y, color) {
     this.x = x;
     this.y = y;
     this.color = color;
+    this.neighbors = [];
 
     this.isObjective = function() {return this.type == OBJECTIVE_CELL;}
     this.isObstacle = function() {return this.type == OBSTACLE_CELL;}
     this.isEmpty = function() {return this.type == EMPTY_CELL;}
+
+    this.equals = function(other) {return this.x == other.x && this.y == other.y;}
 
     this.draw = function(ctx, drawColor = this.color) {
         ctx.fillStyle = drawColor;
@@ -41,6 +44,10 @@ function makeObstacleCell(x, y) {return new Cell(OBSTACLE_CELL, x, y, "black");}
 function makeObjectiveCell(x, y) {return new Cell(OBJECTIVE_CELL, x, y, "green");}
 function makeEmptyCell(x, y) {return new Cell(EMPTY_CELL, x, y, "white");}
 
+function getCellAtUserLocation() {
+    return maze[userLocation.y][userLocation.x];
+}
+
 function updateCanvasSize(canvas) {
     canvas.width = CELL_LENGTH * cols;
     canvas.height = CELL_LENGTH * rows;
@@ -48,11 +55,16 @@ function updateCanvasSize(canvas) {
 
 function generateMaze() {
     var newMaze = [];
-    for(row=0; row<rows; row++) {
+    for(var row=0; row<rows; row++) {
         var newRow = [];
-        for(col=0; col<cols; col++) {
+        for(var col=0; col<cols; col++) {
             // TODO: Replace with real generation
-            if((row + col) % 3 == 0)
+            
+            if(row == 0 && col == 0) {
+                objectiveCell = makeObjectiveCell(col, row);
+                newRow.push(objectiveCell);
+            }
+            else if((row + col) % 9 == 0)
                 newRow.push(makeObstacleCell(col, row));
             else
                 newRow.push(makeEmptyCell(col, row));
@@ -63,27 +75,24 @@ function generateMaze() {
 }
 
 function drawMaze(ctx) {
-    for(row=0; row<rows; row++) {
-        for(col=0; col<cols; col++) {
+    for(var row=0; row<rows; row++) {
+        for(var col=0; col<cols; col++) {
             maze[row][col].draw(ctx);
         }
     }
 }
 
 function updateDrawnPlayerPosition(ctx) {
-    maze[userLocation.y][userLocation.x].draw(ctx, USER_COLOR);
+    getCellAtUserLocation().draw(ctx, USER_COLOR);
 }
 
 function clearDrawnPlayerPosition(ctx) {
-    maze[userLocation.y][userLocation.x].draw(ctx);
+    getCellAtUserLocation().draw(ctx);
 }
 
 function reactToUserInput() {
 
-    if(animating) return;
     if(!((up && down) || (left && right))) {
-        animating = true;
-
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
 
@@ -106,16 +115,12 @@ function reactToUserInput() {
         // TODO: Leave trail behind user's marker
 
         updateDrawnPlayerPosition(ctx);
-
-        animating = false;
     }
 
     setTimeout(reactToUserInput, TIME_PER_CELL_MS);
 }
 
 function updateMaze() {
-
-    animating = true;
 
     cols = document.getElementById("cellWidth").value;
     rows = document.getElementById("cellHeight").value;
@@ -124,12 +129,15 @@ function updateMaze() {
     updateCanvasSize(canvas);
 
     maze = generateMaze();
+    graph = undefined;
 
     var ctx = canvas.getContext("2d");
     drawMaze(ctx);
     updateDrawnPlayerPosition(ctx);
+}
 
-    animating = false;
+function init() {
+    updateMaze();
     reactToUserInput();
 }
 
@@ -184,4 +192,4 @@ function onKeyUp(event) {
 window.addEventListener("keydown", onKeyDown, false);
 window.addEventListener("keyup", onKeyUp, false);
 
-window.onload = updateMaze;
+window.onload = init;
