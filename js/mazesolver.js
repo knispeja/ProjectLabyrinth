@@ -53,6 +53,7 @@ function solveMazeWithAStar(startCell, endCell, ctx) {
 
         // End case: found the objective cell
         if(currentCell.equals(endCell)) {
+            optimalPath = 0; // reset optimal path before calculating
             while(currentCell.parent) {
                 if(ctx) {
                     currentCell.draw(ctx, "yellow");
@@ -103,10 +104,11 @@ function solveMazeWithAStar(startCell, endCell, ctx) {
 
 function solveMaze(displayResult = true) {
 
+    var ctx = undefined;
+
     if(displayResult) {
         var canvas = document.getElementById("canvas");
-        var ctx = canvas.getContext("2d");
-        drawMaze(ctx); // refresh canvas
+        ctx = canvas.getContext("2d");
     }
 
     generateGraphFromMaze();

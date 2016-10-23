@@ -13,12 +13,13 @@
     <body>
         <!-- TODO: Add inputs that change canvas height/width -->
         <canvas id="canvas"></canvas>
-        <form action="javascript:updateMaze()">
+        <form>
             Height: <input type="text" value="80" id="cellHeight" maxlength="4" onkeypress='return numericOnly();'><br>
             Width: <input type="text" value="80" id="cellWidth" maxlength="4" onkeypress='return numericOnly();'><br>
-            <input type="submit" value="Generate Maze">
-            <input type="button" value="Solve Maze" onclick="javascript:solveMaze()">
+            <input id="genMazeBtn" type="button" value="Generate Maze">
+            <input id="solveMazeBtn" type="button" value="Solve Maze">
             <a id="download"><input type="button" value="Download"></a>
+            <input id="resetBtn" type="button" value="Reset Maze">
         </form>
     </body>
 </html>

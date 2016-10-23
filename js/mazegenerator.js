@@ -13,6 +13,7 @@ var right;
 
 var maze = [];
 var userLocation = {x:0, y:0};
+var originalLocation = {x:0, y:0};
 var objectiveCell;
 var cols;
 var rows;
@@ -159,6 +160,7 @@ function generateMaze() {
     for(var row=1; row<rows; row++) {
         if(newMaze[row][1].isEmpty()) {
             userLocation = {x: 1, y:row};
+            originalLocation = userLocation;
             break;
         }
     }
@@ -222,8 +224,7 @@ function reactToUserInput() {
 
             // Update steps and leave a trail behind
             stepsTaken++;
-            oldCell.color = "orange";
-            oldCell.draw(ctx);
+            oldCell.draw(ctx, "orange");
 
             // Player reached the objective
             if(newCell.isObjective()) {
@@ -242,16 +243,20 @@ function reactToUserInput() {
     setTimeout(reactToUserInput, TIME_PER_CELL_MS);
 }
 
-function resetMaze() {
+function resetMaze(redraw = true) {
     up = down = left = right = false;
-    optimalPath = 0;
     stepsTaken = 0;
+    userLocation = originalLocation;
+
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    if(redraw) drawMaze(ctx);
 }
 
 function updateMaze() {
 
     // Reset any variables from the previous maze
-    resetMaze();
+    resetMaze(false);
 
     // Get columns and rows from the input boxes
     cols = document.getElementById("cellWidth").value;
@@ -279,10 +284,20 @@ function updateMaze() {
 
     // Solve the maze in order to get the optimal number of steps
     // Function automatically changes optimalPath to the optimal number of steps
-    solveMaze(false);
+    solveMaze(false); // false prevents solution from displaying
 }
 
 function addEventListeners() {
+
+    // Add event listener to generate maze button
+    document.getElementById("genMazeBtn").addEventListener('click', updateMaze, false);
+
+    // Add event listener to solve maze button
+    document.getElementById("solveMazeBtn").addEventListener('click', solveMaze, false);
+
+    // Add event listener to reset maze button
+    document.getElementById("resetBtn").addEventListener('click', resetMaze, false);
+
     // Add download action to the download button
     document.getElementById("download").addEventListener('click', function() {
         downloadMaze(this, 'maze.png');
