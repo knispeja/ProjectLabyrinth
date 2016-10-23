@@ -112,16 +112,7 @@ function generateMazeKruskal(m) {
             var set1 = n1.containingSet;
             if (set0.length == set1.length) {
                 for(var i=0; i<set0.length; i++) {
-
-                    var found = false;
-                    for(var j=0; j<set1.length; j++) {
-                        if(set0[i].equals(set1[j])) {
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if(!found) {
+                    if(!set0[i].equals(set1[i])) {
                         setsAreEqual = false;
                         break;
                     }
