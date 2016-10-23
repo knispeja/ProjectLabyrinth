@@ -299,6 +299,10 @@ function addEventListeners() {
     document.getElementById("download").addEventListener('click', function() {
         downloadMaze(this, 'maze.png');
     }, false);
+
+    // Add event listeners for moving about the maze
+    window.addEventListener("keydown", onKeyDown, false);
+    window.addEventListener("keyup", onKeyUp, false);
 }
 
 // Runs on load
@@ -361,8 +365,5 @@ function onKeyUp(event) {
             break;
     }
 }
-
-window.addEventListener("keydown", onKeyDown, false);
-window.addEventListener("keyup", onKeyUp, false);
 
 window.onload = init;
