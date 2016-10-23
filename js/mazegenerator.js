@@ -224,10 +224,15 @@ function reactToUserInput() {
 
 function updateMaze() {
 
-    // TODO: Limit number of cols/rows to odd numbers
+    // Get columns and rows from the input boxes
     cols = document.getElementById("cellWidth").value;
     rows = document.getElementById("cellHeight").value;
 
+    // Limit numbers to odd values
+    if(cols % 2 == 0) cols++;
+    if(rows % 2 == 0) rows++;
+
+    // Generate maze and update the canvas...
     var canvas = document.getElementById("canvas");
     updateCanvasSize(canvas);
 
