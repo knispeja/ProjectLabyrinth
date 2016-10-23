@@ -235,9 +235,16 @@ function reactToUserInput() {
     setTimeout(reactToUserInput, TIME_PER_CELL_MS);
 }
 
+function resetMaze() {
+    graph, up, down, left, right = false;
+    optimalPath = 0;
+    stepsTaken = 0;
+}
+
 function updateMaze() {
 
-    up, down, left, right = false;
+    // Reset any variables from the previous maze
+    resetMaze();
 
     // Get columns and rows from the input boxes
     cols = document.getElementById("cellWidth").value;
@@ -258,14 +265,13 @@ function updateMaze() {
     updateCanvasSize(canvas);
 
     maze = generateMaze();
-    graph = undefined;
 
     var ctx = canvas.getContext("2d");
     drawMaze(ctx);
     updateDrawnPlayerPosition(ctx);
 
     // Solve the maze in order to get the optimal number of steps
-    optimalPath = 0;
+    // Function automatically changes optimalPath to the optimal number of steps
     solveMaze(false);
 }
 
