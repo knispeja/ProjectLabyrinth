@@ -57,11 +57,8 @@ function solveMazeWithAStar(startCell, endCell, ctx) {
 
         // End case: found the objective cell
         if(currentCell.equals(endCell)) {
-            var first = true;
             while(currentCell.parent) {
-                if(first) first = false;
-                else currentCell.draw(ctx, "yellow");
-
+                currentCell.draw(ctx, "yellow");
                 var temp = currentCell.parent;
                 currentCell.parent = null;
                 currentCell = temp;

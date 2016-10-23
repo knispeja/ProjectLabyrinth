@@ -11,7 +11,7 @@ var left;
 var right;
 
 var maze = [];
-var userLocation = {x:10, y:10};
+var userLocation = {x:0, y:0};
 var objectiveCell;
 var cols;
 var rows;
@@ -166,18 +166,18 @@ function generateMaze() {
     newMaze = generateMazeKruskal(newMaze);
 
     // Place starting point
-    for(var row=0; row<rows; row++) {
-        if(maze[row][1].isEmpty()) {
+    for(var row=1; row<rows; row++) {
+        if(newMaze[row][1].isEmpty()) {
             userLocation = {x: 1, y:row};
             break;
         }
     }
     
     // Place objective
-    for(var row=rows-1; row>=0; row--) {
-        if(maze[row][cols-2].isEmpty()) {
-            objectiveCell = makeObjectiveCell();
-            maze[row][cols-2] = objectiveCell;
+    for(var row=rows-2; row>=0; row--) {
+        if(newMaze[row][cols-2].isEmpty()) {
+            objectiveCell = makeObjectiveCell(cols-1, row);
+            newMaze[row][cols-1] = objectiveCell;
             break;
         }
     }
