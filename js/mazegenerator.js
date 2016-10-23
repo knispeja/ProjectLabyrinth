@@ -1,4 +1,5 @@
 const CELL_LENGTH = 10; // in px
+const MIN_MAZE_DIMENSION = 5; // in cells
 const TIME_PER_CELL_MS = 70;
 const USER_COLOR = "red";
 const OBSTACLE_CELL = "obstacle";
@@ -245,6 +246,12 @@ function updateMaze() {
     // Limit numbers to odd values
     if(cols % 2 == 0) cols++;
     if(rows % 2 == 0) rows++;
+
+    // Prevent the user from trying to generate anything too small
+    if(cols < MIN_MAZE_DIMENSION || rows < MIN_MAZE_DIMENSION) {
+        alert("Maze cannot be smaller than " + MIN_MAZE_DIMENSION + " cells in any dimension.");
+        return;
+    }
 
     // Generate maze and update the canvas...
     var canvas = document.getElementById("canvas");
