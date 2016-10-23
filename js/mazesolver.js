@@ -1,8 +1,11 @@
 var graph;
 
 function addCellToNeighbors(cell, possibleNeighbor) {
-    if(possibleNeighbor && !possibleNeighbor.isObstacle())
-        cell.neighbors.push(possibleNeighbor);
+    if(possibleNeighbor) {
+        if(cell.isObstacle()) cell.neighbors.push(possibleNeighbor);
+        else if(!possibleNeighbor.isObstacle())
+            cell.neighbors.push(possibleNeighbor);
+    }
 }
 
 function generateGraphFromMaze() {
@@ -12,15 +15,16 @@ function generateGraphFromMaze() {
         for(var col=0; col<cols; col++) {
 
             var cell = maze[row][col];
-            if(cell.isObstacle()) continue;
-            cell.f = 0;
-            cell.g = 0;
-            cell.h = 0;
-            cell.parent = null;
-            cell.inOpen = false;
-            cell.inClosed = false;
 
-            var otherCell;
+            if(!cell.isObstacle()) {
+                cell.f = 0;
+                cell.g = 0;
+                cell.h = 0;
+                cell.parent = null;
+                cell.inOpen = false;
+                cell.inClosed = false;
+            }
+
             // Above
             if(maze[row-1]) addCellToNeighbors(cell, maze[row-1][col]);
 
@@ -57,7 +61,7 @@ function solveMazeWithAStar(startCell, endCell, ctx) {
             while(currentCell.parent) {
                 if(first) first = false;
                 else currentCell.draw(ctx, "yellow");
-                
+
                 var temp = currentCell.parent;
                 currentCell.parent = null;
                 currentCell = temp;

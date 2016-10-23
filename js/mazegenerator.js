@@ -11,7 +11,7 @@ var left;
 var right;
 
 var maze = [];
-var userLocation = {x:0, y:0};
+var userLocation = {x:10, y:10};
 var objectiveCell;
 var cols;
 var rows;
@@ -41,7 +41,7 @@ function Cell(type, x, y, color) {
 }
 
 function makeObstacleCell(x, y) {return new Cell(OBSTACLE_CELL, x, y, "black");}
-function makeObjectiveCell(x, y) {return new Cell(OBJECTIVE_CELL, x, y, "green");}
+function makeObjectiveCell(x, y) {return new Cell(OBJECTIVE_CELL, x, y, "lime");}
 function makeEmptyCell(x, y) {return new Cell(EMPTY_CELL, x, y, "white");}
 
 function getCellAtUserLocation() {
@@ -53,24 +53,135 @@ function updateCanvasSize(canvas) {
     canvas.height = CELL_LENGTH * rows;
 }
 
+function generateObjectivePoint() {
+    objectiveCell = makeObjectiveCell(col, row);
+    newRow.push(objectiveCell);
+}
+
+function generateMazeKruskal(m) {
+
+    var edges = [];
+
+    // Place initial grid
+    for(var row=0; row<rows; row++) {
+        for(var col=0; col<cols; col++) {
+            if(row % 2 == 0 || col % 2 == 0) {
+                if(row % 2 == 0 && col % 2 == 0) {
+                    m[row][col] = makeObstacleCell(col, row);
+                }
+                else {
+                    m[row][col] = makeObstacleCell(col, row);
+                    edges.push(m[row][col]);
+                }
+            }
+            else {
+                var c = [];
+                c.push(m[row][col]);
+                m[row][col].containingSet = c;
+            }
+        }
+    }
+    
+    // Generate graph
+    maze = m;
+    generateGraphFromMaze();
+
+    // Loop over the list of relevant edges
+    while(edges.length > 0) {
+        // Choose a random edge and get its neighbors
+        var edgeInd = Math.floor(Math.random() * edges.length);
+        var edge = edges[edgeInd];
+        edges.splice(edgeInd, 1);
+        
+        var n0 = false;
+        var n1 = false;
+        var extra = false;
+        for(var i=0; i<edge.neighbors.length; i++) {
+            var neighbor = edge.neighbors[i];
+            if(!neighbor.isObstacle()) {
+                if(!n0) n0 = neighbor;
+                else if(!n1) n1 = neighbor;
+                else extra = true;
+            }
+        }
+
+        if(n0 && n1 && !extra) {
+            // Check if arrays are equal
+            var setsAreEqual = true;
+            var set0 = n0.containingSet;
+            var set1 = n1.containingSet;
+            if (set0.length == set1.length) {
+                for(var i=0; i<set0.length; i++) {
+
+                    var found = false;
+                    for(var j=0; j<set1.length; j++) {
+                        if(set0[i].equals(set1[j])) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if(!found) {
+                        setsAreEqual = false;
+                        break;
+                    }
+                }
+            } else {
+                setsAreEqual = false;
+            }
+
+            // Check if the spaces are joined or not
+            if(!setsAreEqual) {
+                var newSet = set0.concat(set1);
+                var newEmptyCell = makeEmptyCell(edge.x, edge.y);
+                m[edge.y][edge.x] = newEmptyCell;
+
+                newEmptyCell.containingSet = newSet;
+
+                // TODO: Speed things up by avoiding this step using a container object
+                for(var i=0; i<newSet.length; i++) {
+                    newSet[i].containingSet = newSet;
+                }
+            }
+        }
+    }
+
+    return m;
+}
+
 function generateMaze() {
     var newMaze = [];
+
+    // Generate empty maze
     for(var row=0; row<rows; row++) {
         var newRow = [];
         for(var col=0; col<cols; col++) {
-            // TODO: Replace with real generation
-            
-            if(row == 0 && col == 0) {
-                objectiveCell = makeObjectiveCell(col, row);
-                newRow.push(objectiveCell);
-            }
-            else if((row + col) % 9 == 0)
-                newRow.push(makeObstacleCell(col, row));
-            else
-                newRow.push(makeEmptyCell(col, row));
+            newRow.push(makeEmptyCell(col, row));
         }
         newMaze.push(newRow);
     }
+
+    // Generate maze innards
+    // TODO: Give user a choice on which method gets used
+    newMaze = generateMazeKruskal(newMaze);
+
+    // Place starting point
+    for(var row=0; row<rows; row++) {
+        if(maze[row][1].isEmpty()) {
+            userLocation = {x: 1, y:row};
+            break;
+        }
+    }
+    
+    // Place objective
+    for(var row=rows-1; row>=0; row--) {
+        if(maze[row][cols-2].isEmpty()) {
+            objectiveCell = makeObjectiveCell();
+            maze[row][cols-2] = objectiveCell;
+            break;
+        }
+    }
+
     return newMaze;
 }
 
@@ -122,6 +233,7 @@ function reactToUserInput() {
 
 function updateMaze() {
 
+    // TODO: Limit number of cols/rows to odd numbers
     cols = document.getElementById("cellWidth").value;
     rows = document.getElementById("cellHeight").value;
 
