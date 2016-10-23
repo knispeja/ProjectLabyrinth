@@ -58,7 +58,12 @@ function solveMazeWithAStar(startCell, endCell, ctx) {
         // End case: found the objective cell
         if(currentCell.equals(endCell)) {
             while(currentCell.parent) {
-                currentCell.draw(ctx, "yellow");
+                if(ctx) {
+                    currentCell.draw(ctx, "yellow");
+                }
+                else {
+                    optimalPath++;
+                }
                 var temp = currentCell.parent;
                 currentCell.parent = null;
                 currentCell = temp;
@@ -100,10 +105,16 @@ function solveMazeWithAStar(startCell, endCell, ctx) {
     }
 }
 
-function solveMaze() {
-    var canvas = document.getElementById("canvas");
-    var ctx = canvas.getContext("2d");
-    drawMaze(ctx); // refresh canvas
+function solveMaze(displayResult = true) {
+
+    if(displayResult) {
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        drawMaze(ctx); // refresh canvas
+    }
+
     generateGraphFromMaze();
+
+    // TODO: save solution if it's already been solved to save time
     solveMazeWithAStar(getCellAtUserLocation(), objectiveCell, ctx);
 }

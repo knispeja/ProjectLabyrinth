@@ -1,5 +1,5 @@
 const CELL_LENGTH = 10; // in px
-const TIME_PER_CELL_MS = 50;
+const TIME_PER_CELL_MS = 70;
 const USER_COLOR = "red";
 const OBSTACLE_CELL = "obstacle";
 const EMPTY_CELL = "empty";
@@ -15,6 +15,9 @@ var userLocation = {x:0, y:0};
 var objectiveCell;
 var cols;
 var rows;
+
+var stepsTaken = 0;
+var optimalPath = 0;
 
 // Used for form inputs that only accept numbers
 function numericOnly() {
@@ -200,6 +203,7 @@ function reactToUserInput() {
 
         clearDrawnPlayerPosition(ctx);
 
+        var oldCell = getCellAtUserLocation();
         var newCell;
         if(up && userLocation.y != 0) newCell = maze[userLocation.y - 1][userLocation.x];
         else if(down && userLocation.y != cols - 1) newCell = maze[userLocation.y + 1][userLocation.x];
@@ -212,9 +216,17 @@ function reactToUserInput() {
             if(newCell && !newCell.isObstacle()) userLocation = {x: newCell.x, y: newCell.y};
         }
 
-        // TOOD: Check if user reached objective
-
-        // TODO: Leave trail behind user's marker
+        if(newCell && !newCell.isObstacle() && !newCell.equals(oldCell)) {
+            stepsTaken++;
+            oldCell.color = "orange";
+            oldCell.draw(ctx);
+            if(newCell.isObjective()) {
+                var message = "Congratulations, you solved the maze!";
+                message += "\nSteps taken:  " + stepsTaken;
+                message += "\nOptimal path: " + optimalPath;
+                alert(message);
+            }
+        }
 
         updateDrawnPlayerPosition(ctx);
     }
@@ -223,6 +235,8 @@ function reactToUserInput() {
 }
 
 function updateMaze() {
+
+    up, down, left, right = false;
 
     // Get columns and rows from the input boxes
     cols = document.getElementById("cellWidth").value;
@@ -242,6 +256,10 @@ function updateMaze() {
     var ctx = canvas.getContext("2d");
     drawMaze(ctx);
     updateDrawnPlayerPosition(ctx);
+
+    // Solve the maze in order to get the optimal number of steps
+    optimalPath = 0;
+    solveMaze(false);
 }
 
 function init() {
