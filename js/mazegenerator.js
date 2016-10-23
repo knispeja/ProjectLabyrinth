@@ -20,11 +20,6 @@ var rows;
 var stepsTaken = 0;
 var optimalPath = 0;
 
-// Used for form inputs that only accept numbers
-function numericOnly() {
-    return event.charCode >= 48 && event.charCode <= 57;
-}
-
 function Cell(type, x, y, color) {
     this.type = type;
     this.x = x;
@@ -287,9 +282,17 @@ function updateMaze() {
     solveMaze(false);
 }
 
+function addEventListeners() {
+    // Add download action to the download button
+    document.getElementById("download").addEventListener('click', function() {
+        downloadMaze(this, 'maze.png');
+    }, false);
+}
+
 // Runs on load
 function init() {
     updateMaze();
+    addEventListeners();
     reactToUserInput();
 }
 

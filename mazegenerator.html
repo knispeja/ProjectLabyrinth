@@ -5,6 +5,7 @@
         <title>Maze Generator</title>
         <link rel="stylesheet" type="text/css" href="css/indexstyle.css">
 
+        <script src="js/mazeutils.js"></script>
         <script src="js/mazegenerator.js"></script>
         <script src="js/mazesolver.js"></script>
     </head>
@@ -12,12 +13,12 @@
     <body>
         <!-- TODO: Add inputs that change canvas height/width -->
         <canvas id="canvas"></canvas>
-
         <form action="javascript:updateMaze()">
             Height: <input type="text" value="80" id="cellHeight" maxlength="4" onkeypress='return numericOnly();'><br>
             Width: <input type="text" value="80" id="cellWidth" maxlength="4" onkeypress='return numericOnly();'><br>
             <input type="submit" value="Generate Maze">
             <input type="button" value="Solve Maze" onclick="javascript:solveMaze()">
+            <a id="download"><input type="button" value="Download"></a>
         </form>
     </body>
 </html>
