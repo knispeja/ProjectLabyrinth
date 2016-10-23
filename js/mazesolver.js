@@ -36,7 +36,7 @@ function generateGraphFromMaze() {
     }
 }
 
-function solveMazeWithAStar(startCell, endCell, ctx) {
+function solveMazeWithAStar(startCell, endCell, displayResult) {
     var open = [];
     var closed = [];
     open.push(startCell);
@@ -55,8 +55,8 @@ function solveMazeWithAStar(startCell, endCell, ctx) {
         if(currentCell.equals(endCell)) {
             optimalPath = 0; // reset optimal path before calculating
             while(currentCell.parent) {
-                if(ctx) {
-                    currentCell.draw(ctx, "yellow");
+                if(displayResult) {
+                    currentCell.draw("yellow");
                 }
                 else {
                     optimalPath++;
@@ -104,15 +104,8 @@ function solveMazeWithAStar(startCell, endCell, ctx) {
 
 function solveMaze(displayResult = true) {
 
-    var ctx = undefined;
-
-    if(displayResult) {
-        var canvas = document.getElementById("canvas");
-        ctx = canvas.getContext("2d");
-    }
-
     generateGraphFromMaze();
 
     // TODO: save solution if it's already been solved to save time
-    solveMazeWithAStar(getCellAtUserLocation(), objectiveCell, ctx);
+    solveMazeWithAStar(getCellAtUserLocation(), objectiveCell, displayResult);
 }

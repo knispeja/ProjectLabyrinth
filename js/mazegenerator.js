@@ -6,6 +6,9 @@ const OBSTACLE_CELL = "obstacle";
 const EMPTY_CELL = "empty";
 const OBJECTIVE_CELL = "objective";
 
+var canvas;
+var ctx;
+
 var up;
 var down;
 var left;
@@ -34,7 +37,7 @@ function Cell(type, x, y, color) {
 
     this.equals = function(other) {return this.x == other.x && this.y == other.y;}
 
-    this.draw = function(ctx, drawColor = this.color) {
+    this.draw = function(drawColor = this.color) {
         ctx.fillStyle = drawColor;
         ctx.fillRect(this.x * CELL_LENGTH, this.y * CELL_LENGTH, CELL_LENGTH, CELL_LENGTH);
     }
@@ -48,7 +51,7 @@ function getCellAtUserLocation() {
     return maze[userLocation.y][userLocation.x];
 }
 
-function updateCanvasSize(canvas) {
+function updateCanvasSize() {
     canvas.width = CELL_LENGTH * cols;
     canvas.height = CELL_LENGTH * rows;
 }
@@ -177,20 +180,20 @@ function generateMaze() {
     return newMaze;
 }
 
-function drawMaze(ctx) {
+function drawMaze() {
     for(var row=0; row<rows; row++) {
         for(var col=0; col<cols; col++) {
-            maze[row][col].draw(ctx);
+            maze[row][col].draw();
         }
     }
 }
 
-function updateDrawnPlayerPosition(ctx) {
-    getCellAtUserLocation().draw(ctx, USER_COLOR);
+function updateDrawnPlayerPosition() {
+    getCellAtUserLocation().draw(USER_COLOR);
 }
 
-function clearDrawnPlayerPosition(ctx) {
-    getCellAtUserLocation().draw(ctx);
+function clearDrawnPlayerPosition() {
+    getCellAtUserLocation().draw();
 }
 
 // Runs every TIME_PER_CELL_MS
@@ -198,11 +201,9 @@ function reactToUserInput() {
 
     // Ignore conflicting input
     if(!((up && down) || (left && right))) {
-        var canvas = document.getElementById("canvas");
-        var ctx = canvas.getContext("2d");
-
+        
         // Remove player from old position
-        clearDrawnPlayerPosition(ctx);
+        clearDrawnPlayerPosition();
 
         var oldCell = getCellAtUserLocation();
         var newCell;
@@ -224,7 +225,7 @@ function reactToUserInput() {
 
             // Update steps and leave a trail behind
             stepsTaken++;
-            oldCell.draw(ctx, "orange");
+            oldCell.draw("orange");
 
             // Player reached the objective
             if(newCell.isObjective()) {
@@ -236,7 +237,7 @@ function reactToUserInput() {
         }
 
         // Draw player at new position
-        updateDrawnPlayerPosition(ctx);
+        updateDrawnPlayerPosition();
     }
 
     // Call this function again
@@ -248,9 +249,7 @@ function resetMaze(redraw = true) {
     stepsTaken = 0;
     userLocation = originalLocation;
 
-    var canvas = document.getElementById("canvas");
-    var ctx = canvas.getContext("2d");
-    if(redraw) drawMaze(ctx);
+    if(redraw) drawMaze();
 }
 
 function updateMaze() {
@@ -273,14 +272,12 @@ function updateMaze() {
     }
 
     // Generate maze and update the canvas...
-    var canvas = document.getElementById("canvas");
-    updateCanvasSize(canvas);
+    updateCanvasSize();
 
     maze = generateMaze();
 
-    var ctx = canvas.getContext("2d");
-    drawMaze(ctx);
-    updateDrawnPlayerPosition(ctx);
+    drawMaze();
+    updateDrawnPlayerPosition();
 
     // Solve the maze in order to get the optimal number of steps
     // Function automatically changes optimalPath to the optimal number of steps
@@ -306,6 +303,9 @@ function addEventListeners() {
 
 // Runs on load
 function init() {
+    canvas = document.getElementById("canvas");
+    ctx = canvas.getContext("2d");
+
     updateMaze();
     addEventListeners();
     reactToUserInput();

@@ -5,6 +5,6 @@ function numericOnly() {
 
 // Downloads maze as an image
 function downloadMaze(link, fileName) {
-    link.href = document.getElementById("canvas").toDataURL();
+    link.href = canvas.toDataURL();
     link.download = fileName;
 }
