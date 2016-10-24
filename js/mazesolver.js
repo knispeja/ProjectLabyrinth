@@ -1,17 +1,20 @@
 function addCellToNeighbors(cell, possibleNeighbor) {
     if(possibleNeighbor) {
-        if(cell.isObstacle()) cell.neighbors.push(possibleNeighbor);
-        else if(!possibleNeighbor.isObstacle())
-            cell.neighbors.push(possibleNeighbor);
+        cell.neighbors.push(possibleNeighbor);
+        if(!possibleNeighbor.isObstacle())
+            cell.accessibleNeighbors.push(possibleNeighbor);
     }
 }
 
-function generateGraphFromMaze() {
+function generateGraphForMaze(m = maze) {
+
+    // Loop over all cells in maze
     for(var row=0; row<rows; row++) {
         for(var col=0; col<cols; col++) {
 
-            var cell = maze[row][col];
+            var cell = m[row][col];
 
+            // Only initialize A* values for non-obstacles
             if(!cell.isObstacle()) {
                 cell.f = 0;
                 cell.g = 0;
@@ -22,16 +25,16 @@ function generateGraphFromMaze() {
             }
 
             // Above
-            if(maze[row-1]) addCellToNeighbors(cell, maze[row-1][col]);
+            if(m[row-1]) addCellToNeighbors(cell, m[row-1][col]);
 
             // Below
-            if(maze[row+1]) addCellToNeighbors(cell, maze[row+1][col]);
+            if(m[row+1]) addCellToNeighbors(cell, m[row+1][col]);
 
             // To the left
-            addCellToNeighbors(cell, maze[row][col-1]);
+            addCellToNeighbors(cell, m[row][col-1]);
 
             // To the right
-            addCellToNeighbors(cell, maze[row][col+1]);
+            addCellToNeighbors(cell, m[row][col+1]);
         }
     }
 }
@@ -73,8 +76,8 @@ function solveMazeWithAStar(startCell, endCell, displayResult) {
         currentCell.inOpen = false;
         closed.push(currentCell);
         currentCell.inClosed = true;
-        for(var i=0; i<currentCell.neighbors.length; i++) {
-            var neighbor = currentCell.neighbors[i];
+        for(var i=0; i<currentCell.accessibleNeighbors.length; i++) {
+            var neighbor = currentCell.accessibleNeighbors[i];
             if(neighbor.inClosed || neighbor.isObstacle()) continue;
 
             var g = currentCell.g + 1;
@@ -104,7 +107,7 @@ function solveMazeWithAStar(startCell, endCell, displayResult) {
 
 function solveMaze(displayResult = true) {
 
-    generateGraphFromMaze();
+    generateGraphForMaze();
 
     // TODO: save solution if it's already been solved to save time
     solveMazeWithAStar(getCellAtUserLocation(), objectiveCell, displayResult);

@@ -30,6 +30,7 @@ function Cell(type, x, y, color) {
     this.y = y;
     this.color = color;
     this.neighbors = [];
+    this.accessibleNeighbors = [];
 
     this.isObjective = function() {return this.type == OBJECTIVE_CELL;}
     this.isObstacle = function() {return this.type == OBSTACLE_CELL;}
@@ -61,11 +62,23 @@ function generateObjectivePoint() {
     newRow.push(objectiveCell);
 }
 
+/*
+    Modifies the given maze m, assumed empty, to be a fully-connected maze.
+
+    This method starts with a grid of walls. Every wall is considered for
+    removal, in random order. A wall is only removed if the empty spaces
+    on either side of that wall are NOT already connected by empty space.
+
+    More here: http://weblog.jamisbuck.org/2011/1/3/maze-generation-kruskal-s-algorithm
+*/
 function generateMazeKruskal(m) {
 
+    // TODO: eyespots
+
+    // Edges that will be considered for removal
     var edges = [];
 
-    // Place initial grid
+    // Place initial grid and fill edges array
     for(var row=0; row<rows; row++) {
         for(var col=0; col<cols; col++) {
             if(row % 2 == 0 || col % 2 == 0) {
@@ -86,33 +99,36 @@ function generateMazeKruskal(m) {
     }
     
     // Generate graph
-    maze = m;
-    generateGraphFromMaze();
+    generateGraphForMaze(m);
 
     // Loop over the list of relevant edges
     while(edges.length > 0) {
-        // Choose a random edge and get its neighbors
+
+        // Choose a random edge and remove it from the list of edges
         var edgeInd = Math.floor(Math.random() * edges.length);
         var edge = edges[edgeInd];
         edges.splice(edgeInd, 1);
         
+        // Gather all empty cell neighbors in n0 and n1
         var n0 = false;
         var n1 = false;
         var extra = false;
-        for(var i=0; i<edge.neighbors.length; i++) {
-            var neighbor = edge.neighbors[i];
-            if(!neighbor.isObstacle()) {
-                if(!n0) n0 = neighbor;
-                else if(!n1) n1 = neighbor;
-                else extra = true;
-            }
+        for(var i=0; i<edge.accessibleNeighbors.length; i++) {
+            var neighbor = edge.accessibleNeighbors[i];
+
+            if(!n0) n0 = neighbor;
+            else if(!n1) n1 = neighbor;
+            else extra = true;
         }
 
+        // Consider tearing the wall down only if there are exactly
+        // TWO empty neighbors -- any less/more and it wouldn't make sense
         if(n0 && n1 && !extra) {
-            // Check if arrays are equal
             var setsAreEqual = true;
             var set0 = n0.containingSet;
             var set1 = n1.containingSet;
+
+            // Check equality of containing sets
             if (set0.length == set1.length) {
                 for(var i=0; i<set0.length; i++) {
                     if(!set0[i].equals(set1[i])) {
@@ -140,7 +156,39 @@ function generateMazeKruskal(m) {
         }
     }
 
-    return m;
+    //return m;
+}
+
+/*
+    Modifies the given maze m, assumed empty, to be a fully-connected maze.
+
+    This method starts with a grid of walls. A path is carved through the grid
+    by recursive backtracking/wandering -- tends to create river-like mazes.
+
+    More here: http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking
+*/
+function generateMazeRecursiveBacktracking(m) {
+    var edges = [];
+
+    // Place initial grid
+    for(var row=0; row<rows; row++) {
+        for(var col=0; col<cols; col++) {
+            if(row % 2 == 0 || col % 2 == 0) {
+                if(row % 2 == 0 && col % 2 == 0) {
+                    m[row][col] = makeObstacleCell(col, row);
+                }
+                else {
+                    m[row][col] = makeObstacleCell(col, row);
+                    edges.push(m[row][col]);
+                }
+            }
+            else {
+                var c = [];
+                c.push(m[row][col]);
+                m[row][col].containingSet = c;
+            }
+        }
+    }
 }
 
 function generateMaze() {
@@ -155,9 +203,10 @@ function generateMaze() {
         newMaze.push(newRow);
     }
 
-    // Generate maze innards
+    // Generate maze innards -- these methods do not place starting/ending pts
     // TODO: Give user a choice on which method gets used
-    newMaze = generateMazeKruskal(newMaze);
+    generateMazeKruskal(newMaze);
+    //generateMazeRecursiveBacktracking(newMaze);
 
     // Place starting point
     for(var row=1; row<rows; row++) {
