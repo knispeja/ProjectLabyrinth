@@ -7,6 +7,11 @@ body {
     display: inline-block;
     float: right;
     border: 2px solid #1e2126;
+    width: 1000px;
+}
+
+.headerArea {
+    min-width: 1300px;
 }
 
 .nav {
@@ -37,4 +42,3 @@ img {
     margin-top: 15px;
     border-top: 4px solid #314c77;
 }
-

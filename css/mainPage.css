@@ -7,6 +7,11 @@ body {
     display: inline-block;
     float: right;
     border: 2px solid #1e2126;
+    width: 1000px;
+}
+
+.headerArea {
+    min-width: 1300px;
 }
 
 .nav {
@@ -36,5 +41,24 @@ img {
 .coloredStripe {
     margin-top: 15px;
     border-top: 4px solid #314c77;
+}
+
+#articleReadMore {
+    width: 200px;
+    height: 18px;
+    border: 2px solid black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding: 5px;
+    background-color: slategray;
+    margin-top: 50px;
+}
+
+.articleSpace {
+    height: 600px;
+    scroll-behavior: 
 }
 
