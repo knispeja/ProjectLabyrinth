@@ -59,6 +59,6 @@ img {
 
 .articleSpace {
     height: 600px;
-    scroll-behavior: 
+    overflow: scroll;
 }
 
