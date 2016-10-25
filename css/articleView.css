@@ -1,0 +1,17 @@
+#articlePic {
+    float: right;
+    margin: 40px;
+    max-width: 1000px;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.articleInfo {
+    max-width: 500px;
+    margin-left: 50px;
+    display: inline-block;
+}
+
+#articleDesc {
+    max-width: 500px;
+}
