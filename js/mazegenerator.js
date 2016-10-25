@@ -207,7 +207,7 @@ function generateMazeRecursiveBacktracking(m) {
     // I just generate one number using the total blanks and derive the
     // column/row position of the blank from that number
     var blankNum = Math.floor(Math.random() * numBlanks);
-    var blankRow = Math.floor(blankNum/blankRows) * 2 + 1;
+    var blankRow = (blankNum % blankRows) * 2 + 1;
     var blankCol = (blankNum % blankCols) * 2 + 1
 
     // Recursive wandering
