@@ -1,7 +1,12 @@
 const CELL_LENGTH = 10; // in px
 const MIN_MAZE_DIMENSION = 5; // in cells
 const TIME_PER_CELL_MS = 70;
+
 const USER_COLOR = "red";
+const OBSTACLE_COLOR = "black";
+const EMPTY_COLOR = "white";
+const OBJECTIVE_COLOR = "lime";
+
 const OBSTACLE_CELL = "obstacle";
 const EMPTY_CELL = "empty";
 const OBJECTIVE_CELL = "objective";
@@ -38,15 +43,25 @@ function Cell(type, x, y, color) {
 
     this.equals = function(other) {return this.x == other.x && this.y == other.y;}
 
+    this.convertToEmpty = function() {
+        this.type = EMPTY_CELL;
+        this.color = EMPTY_COLOR;
+    }
+
+    this.convertToObstacle = function() {
+        this.type = OBSTACLE_CELL;
+        this.color = OBSTACLE_COLOR;
+    }
+
     this.draw = function(drawColor = this.color) {
         ctx.fillStyle = drawColor;
         ctx.fillRect(this.x * CELL_LENGTH, this.y * CELL_LENGTH, CELL_LENGTH, CELL_LENGTH);
     }
 }
 
-function makeObstacleCell(x, y) {return new Cell(OBSTACLE_CELL, x, y, "black");}
-function makeObjectiveCell(x, y) {return new Cell(OBJECTIVE_CELL, x, y, "lime");}
-function makeEmptyCell(x, y) {return new Cell(EMPTY_CELL, x, y, "white");}
+function makeObstacleCell(x, y) {return new Cell(OBSTACLE_CELL, x, y, OBSTACLE_COLOR);}
+function makeObjectiveCell(x, y) {return new Cell(OBJECTIVE_CELL, x, y, OBJECTIVE_COLOR);}
+function makeEmptyCell(x, y) {return new Cell(EMPTY_CELL, x, y, EMPTY_COLOR);}
 
 function getCellAtUserLocation() {
     return maze[userLocation.y][userLocation.x];
@@ -60,6 +75,11 @@ function updateCanvasSize() {
 function generateObjectivePoint() {
     objectiveCell = makeObjectiveCell(col, row);
     newRow.push(objectiveCell);
+}
+
+// TODO: move to mazeutils
+function randomIndexOf(array) {
+    return Math.floor(Math.random() * array.length);
 }
 
 /*
@@ -81,14 +101,11 @@ function generateMazeKruskal(m) {
     // Place initial grid and fill edges array
     for(var row=0; row<rows; row++) {
         for(var col=0; col<cols; col++) {
-            if(row % 2 == 0 || col % 2 == 0) {
-                if(row % 2 == 0 && col % 2 == 0) {
-                    m[row][col] = makeObstacleCell(col, row);
-                }
-                else {
-                    m[row][col] = makeObstacleCell(col, row);
-                    edges.push(m[row][col]);
-                }
+            var rowMod = (row % 2 == 0);
+            var colMod = (col % 2 == 0);
+            if(rowMod || colMod) {
+                m[row][col].convertToObstacle();
+                if (rowMod != colMod) edges.push(m[row][col]);
             }
             else {
                 var c = [];
@@ -105,7 +122,7 @@ function generateMazeKruskal(m) {
     while(edges.length > 0) {
 
         // Choose a random edge and remove it from the list of edges
-        var edgeInd = Math.floor(Math.random() * edges.length);
+        var edgeInd = randomIndexOf(edges);
         var edge = edges[edgeInd];
         edges.splice(edgeInd, 1);
         
@@ -155,8 +172,6 @@ function generateMazeKruskal(m) {
             }
         }
     }
-
-    //return m;
 }
 
 /*
@@ -168,27 +183,62 @@ function generateMazeKruskal(m) {
     More here: http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking
 */
 function generateMazeRecursiveBacktracking(m) {
-    var edges = [];
 
     // Place initial grid
     for(var row=0; row<rows; row++) {
         for(var col=0; col<cols; col++) {
-            if(row % 2 == 0 || col % 2 == 0) {
-                if(row % 2 == 0 && col % 2 == 0) {
-                    m[row][col] = makeObstacleCell(col, row);
+            if(row % 2 == 0 || col % 2 == 0)
+                m[row][col].convertToObstacle();
+            else
+                m[row][col].visited = false;
+        }
+    }
+
+    // Generate graph for neighbors
+    generateGraphForMaze(m);
+
+    // Get a random blank space as a starting point
+    // This method is faster/more memory efficient than storing all blanks in an array
+    var numBlanks = ((cols - 1)*(rows - 1))/4; // assumes odd rows/cols
+    var blankCols = (cols - 1)/2;
+    var blankRows = (rows - 1)/2;
+
+    // Faster than running Math.rand() twice for cols and rows. Instead
+    // I just generate one number using the total blanks and derive the
+    // column/row position of the blank from that number
+    var blankNum = Math.floor(Math.random() * numBlanks);
+    var blankRow = Math.floor(blankNum/blankRows) * 2 + 1;
+    var blankCol = (blankNum % blankCols) * 2 + 1
+
+    // Recursive wandering
+    function carvePassages(cell) {
+
+        cell.visited = true;
+
+        // Create shuffled neighbors array TODO: extract into fxn
+        var shuffledNeighbors = [];
+        var indices = Array.apply(null, Array(cell.neighbors.length)).map(function (_, i) {return i;});
+        while(indices.length > 0) {
+            var indexIndex = randomIndexOf(indices);
+            shuffledNeighbors.push(cell.neighbors[indices[indexIndex]]);
+            indices.splice(indexIndex, 1);
+        }
+
+        for(var i=0; i<shuffledNeighbors.length; i++) {
+            var neighbor = shuffledNeighbors[i];
+            if(neighbor.isObstacle()) {
+                for(var j=0; j<neighbor.accessibleNeighbors.length; j++) {
+                    var adjacentEmptyCell = neighbor.accessibleNeighbors[j];
+                    if(!adjacentEmptyCell.visited) {
+                        neighbor.convertToEmpty();
+                        carvePassages(adjacentEmptyCell);
+                    }
                 }
-                else {
-                    m[row][col] = makeObstacleCell(col, row);
-                    edges.push(m[row][col]);
-                }
-            }
-            else {
-                var c = [];
-                c.push(m[row][col]);
-                m[row][col].containingSet = c;
             }
         }
     }
+
+    carvePassages(m[blankRow][blankCol]);
 }
 
 function generateMaze() {
@@ -204,9 +254,10 @@ function generateMaze() {
     }
 
     // Generate maze innards -- these methods do not place starting/ending pts
-    // TODO: Give user a choice on which method gets used
-    generateMazeKruskal(newMaze);
-    //generateMazeRecursiveBacktracking(newMaze);
+    if(document.getElementById("radioKruskal").checked)
+        generateMazeKruskal(newMaze);
+    else
+        generateMazeRecursiveBacktracking(newMaze);
 
     // Place starting point
     for(var row=1; row<rows; row++) {
@@ -245,7 +296,7 @@ function clearDrawnPlayerPosition() {
     getCellAtUserLocation().draw();
 }
 
-// Runs every TIME_PER_CELL_MS
+// Runs every TIME_PER_CELL_MS, so needs to be fast
 function reactToUserInput() {
 
     // Ignore conflicting input
@@ -276,6 +327,8 @@ function reactToUserInput() {
             stepsTaken++;
             oldCell.draw("orange");
 
+            // TODO: make trail darken upon backtracking
+
             // Player reached the objective
             if(newCell.isObjective()) {
                 var message = "Congratulations, you solved the maze!";
@@ -289,7 +342,7 @@ function reactToUserInput() {
         updateDrawnPlayerPosition();
     }
 
-    // Call this function again
+    // Call this function again in TIME_PER_CELL_MS
     setTimeout(reactToUserInput, TIME_PER_CELL_MS);
 }
 
