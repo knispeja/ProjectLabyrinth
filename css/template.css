@@ -24,7 +24,7 @@ body {
     border-right: 2px solid #1e2126;
 }
 
-img {
+#logo {
     vertical-align: top;
     padding: 10px 0px 0px 10px;
 }
@@ -41,4 +41,5 @@ img {
 .coloredStripe {
     margin-top: 15px;
     border-top: 4px solid #314c77;
+    margin-bottom: 15px;
 }
