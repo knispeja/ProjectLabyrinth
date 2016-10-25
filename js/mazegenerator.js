@@ -254,9 +254,10 @@ function generateMaze() {
     }
 
     // Generate maze innards -- these methods do not place starting/ending pts
-    // TODO: Give user a choice on which method gets used
-    //generateMazeKruskal(newMaze);
-    generateMazeRecursiveBacktracking(newMaze);
+    if(document.getElementById("radioKruskal").checked)
+        generateMazeKruskal(newMaze);
+    else
+        generateMazeRecursiveBacktracking(newMaze);
 
     // Place starting point
     for(var row=1; row<rows; row++) {
