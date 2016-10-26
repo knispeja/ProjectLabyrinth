@@ -5,10 +5,40 @@
 <head>
 	<title>Project Labyrinth User Mazes</title>
     <link rel="stylesheet" type="text/css" href="css/template.css">
+    <link rel="stylesheet" type="text/css" href="css/userMazes.css">
 </head>
 
 <body>
 	<script src="js/template.js"></script>
+	<div id="uploadBox">
+		<h1>Upload your own maze</h1>
+		<form>
+			<span id="leftInput">
+				<p class="label">Title: </p><input class="in" type="text" id="mazeTitle" value="" >
+				<br \>
+				<p class="label">Description: </p><input class="in" type="text" id="mazeDesc" value="">
+				<br \>
+			</span>
+			<span id="rightInput">
+				<p class="label">Image: </p><input class="in" type="file" id="imageUploaded" value="">
+				<br \>
+				<button id="submit" type="button">Submit</button>
+				<br \>
+			</span>
+		</form>
+	</div>
+	<div id="mazes">
+		<ul>	
+			<li>
+				<span class="mazeEntry">
+    				<img class="mazePic" src="images/example.jpg" alt="Picture goes here">
+					<br/>
+					<a class="mazeLink" href="mazeView.html">Maze Link</a>
+				
+				</span>
+			</li>
+		</ul>
+	</div>
 </body>
 
 </html>
