@@ -19,6 +19,7 @@ document.write('\
 		</div>\
        <div class="coloredStripe"></div>\
 	</div>\
+	<script src="js/searchHandler.js"></script>\
 ');
 // Note: We should add something below here which changes the text and effect of the Login button
 // if the user is signed in
