@@ -72,16 +72,6 @@ function updateCanvasSize() {
     canvas.height = CELL_LENGTH * rows;
 }
 
-function generateObjectivePoint() {
-    objectiveCell = makeObjectiveCell(col, row);
-    newRow.push(objectiveCell);
-}
-
-// TODO: move to mazeutils
-function randomIndexOf(array) {
-    return Math.floor(Math.random() * array.length);
-}
-
 /*
     Modifies the given maze m, assumed empty, to be a fully-connected maze.
 
@@ -160,10 +150,9 @@ function generateMazeKruskal(m) {
             // Check if the spaces are joined or not
             if(!setsAreEqual) {
                 var newSet = set0.concat(set1);
-                var newEmptyCell = makeEmptyCell(edge.x, edge.y);
-                m[edge.y][edge.x] = newEmptyCell;
 
-                newEmptyCell.containingSet = newSet;
+                m[edge.y][edge.x].convertToEmpty();
+                m[edge.y][edge.x].containingSet = newSet;
 
                 // TODO: Speed things up by avoiding this step using a container object
                 for(var i=0; i<newSet.length; i++) {
@@ -215,14 +204,7 @@ function generateMazeRecursiveBacktracking(m) {
 
         cell.visited = true;
 
-        // Create shuffled neighbors array TODO: extract into fxn
-        var shuffledNeighbors = [];
-        var indices = Array.apply(null, Array(cell.neighbors.length)).map(function (_, i) {return i;});
-        while(indices.length > 0) {
-            var indexIndex = randomIndexOf(indices);
-            shuffledNeighbors.push(cell.neighbors[indices[indexIndex]]);
-            indices.splice(indexIndex, 1);
-        }
+        var shuffledNeighbors = shuffleArray(cell.neighbors);
 
         for(var i=0; i<shuffledNeighbors.length; i++) {
             var neighbor = shuffledNeighbors[i];
@@ -241,6 +223,7 @@ function generateMazeRecursiveBacktracking(m) {
     carvePassages(m[blankRow][blankCol]);
 }
 
+// Returns a new maze (2D array, row-indexed first) using the user-selected method
 function generateMaze() {
     var newMaze = [];
 
@@ -253,13 +236,13 @@ function generateMaze() {
         newMaze.push(newRow);
     }
 
-    // Generate maze innards -- these methods do not place starting/ending pts
+    // Generate maze innards -- these methods will not place starting/ending pts
     if(document.getElementById("radioKruskal").checked)
         generateMazeKruskal(newMaze);
     else
         generateMazeRecursiveBacktracking(newMaze);
 
-    // Place starting point
+    // Place starting point along west wall
     for(var row=1; row<rows; row++) {
         if(newMaze[row][1].isEmpty()) {
             userLocation = {x: 1, y:row};
@@ -268,7 +251,7 @@ function generateMaze() {
         }
     }
     
-    // Place objective
+    // Place objective along east wall
     for(var row=rows-2; row>=0; row--) {
         if(newMaze[row][cols-2].isEmpty()) {
             objectiveCell = makeObjectiveCell(cols-1, row);
@@ -280,6 +263,7 @@ function generateMaze() {
     return newMaze;
 }
 
+// Draw the entire maze in the default color
 function drawMaze() {
     for(var row=0; row<rows; row++) {
         for(var col=0; col<cols; col++) {
@@ -288,10 +272,12 @@ function drawMaze() {
     }
 }
 
+// Redraw the player in the normal player color
 function updateDrawnPlayerPosition() {
     getCellAtUserLocation().draw(USER_COLOR);
 }
 
+// Redraw the player's current position in the default color
 function clearDrawnPlayerPosition() {
     getCellAtUserLocation().draw();
 }
@@ -354,7 +340,9 @@ function resetMaze(redraw = true) {
     if(redraw) drawMaze();
 }
 
-function updateMaze() {
+// If the inputs are appropriate, purges the current maze and generates a new one in its place.
+// Resets any variables like user position, held keys, paths, etc. that the old maze relied on.
+function remakeMaze() {
 
     // Reset any variables from the previous maze
     resetMaze(false);
@@ -386,49 +374,22 @@ function updateMaze() {
     solveMaze(false); // false prevents solution from displaying
 }
 
-function addEventListeners() {
-
-    // Add event listener to generate maze button
-    document.getElementById("genMazeBtn").addEventListener('click', updateMaze, false);
-
-    // Add event listener to solve maze button
-    document.getElementById("solveMazeBtn").addEventListener('click', solveMaze, false);
-
-    // Add event listener to reset maze button
-    document.getElementById("resetBtn").addEventListener('click', resetMaze, false);
-
-    // Add download action to the download button
-    document.getElementById("download").addEventListener('click', function() {
-        downloadMaze(this, 'maze.png');
-    }, false);
-
-    // Add event listeners for moving about the maze
-    window.addEventListener("keydown", onKeyDown, false);
-    window.addEventListener("keyup", onKeyUp, false);
-}
-
-// Runs on load
-function init() {
-    canvas = document.getElementById("canvas");
-    ctx = canvas.getContext("2d");
-
-    updateMaze();
-    addEventListeners();
-    reactToUserInput();
-}
-
 function onKeyDown(event) {
 
     var keyCode = event.keyCode;
+
+    // Always respond to enter being pressed by regenerating the maze
     if(keyCode == 13) {
-        updateMaze();
+        remakeMaze();
         return;
     }
 
+    // Don't capture input if the user is already in a text box
     if(document.activeElement instanceof HTMLInputElement && document.activeElement.type == "text") {
         return;
     }
 
+    // Respond to directional inputs
     switch(keyCode) {     
         case 38:  //up arrow
         case 87:  //w
@@ -454,7 +415,10 @@ function onKeyDown(event) {
 }
 
 function onKeyUp(event) {
+
     var keyCode = event.keyCode;
+
+    // Always keep track of direction inputs being released
     switch(keyCode){
         case 38:  //up arrow
         case 87:  //w
@@ -473,6 +437,38 @@ function onKeyUp(event) {
             right = false;
             break;
     }
+}
+
+// Add event listeners to the various buttons and fields on the page
+function addEventListeners() {
+
+    // Add event listener to generate maze button
+    document.getElementById("genMazeBtn").addEventListener('click', remakeMaze, false);
+
+    // Add event listener to solve maze button
+    document.getElementById("solveMazeBtn").addEventListener('click', solveMaze, false);
+
+    // Add event listener to reset maze button
+    document.getElementById("resetBtn").addEventListener('click', resetMaze, false);
+
+    // Add download action to the download button
+    document.getElementById("download").addEventListener('click', function() {
+        downloadMaze(this, 'maze.png');
+    }, false);
+
+    // Add event listeners for moving about the maze
+    window.addEventListener("keydown", onKeyDown, false);
+    window.addEventListener("keyup", onKeyUp, false);
+}
+
+// Runs on load
+function init() {
+    canvas = document.getElementById("canvas");
+    ctx = canvas.getContext("2d");
+
+    remakeMaze();
+    addEventListeners();
+    reactToUserInput();
 }
 
 window.onload = init;
