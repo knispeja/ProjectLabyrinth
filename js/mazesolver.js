@@ -1,3 +1,5 @@
+// Adds the given neighbor to the given cell's neighbor list and
+// its accessibleNeighbor list (if necessary), if it exists
 function addCellToNeighbors(cell, possibleNeighbor) {
     if(possibleNeighbor) {
         cell.neighbors.push(possibleNeighbor);
@@ -6,6 +8,9 @@ function addCellToNeighbors(cell, possibleNeighbor) {
     }
 }
 
+// Generates two lists for every cell in the given maze:
+//      cell.accessibleNeighbors, which holds non-obstacle neighbors, and
+//      cell.neighbors, which holds all neighbors
 function generateGraphForMaze(m = maze) {
 
     // Loop over all cells in maze
