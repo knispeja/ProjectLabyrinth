@@ -418,11 +418,18 @@ function init() {
 }
 
 function onKeyDown(event) {
+
     var keyCode = event.keyCode;
-    switch(keyCode){
-        case 13:  //enter
-            updateMaze();
-            break;
+    if(keyCode == 13) {
+        updateMaze();
+        return;
+    }
+
+    if(document.activeElement instanceof HTMLInputElement && document.activeElement.type == "text") {
+        return;
+    }
+
+    switch(keyCode) {     
         case 38:  //up arrow
         case 87:  //w
             event.preventDefault();
