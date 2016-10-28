@@ -100,7 +100,10 @@ function generateMazeKruskal(m) {
             else {
                 var c = [];
                 c.push(m[row][col]);
-                m[row][col].containingSet = c;
+
+                // We don't have to update quite as many references if we store the sets in an object
+                // rather than just as a simple array. See note labeled @setObjects below...
+                m[row][col].containingSet = {set:c};
             }
         }
     }
@@ -132,32 +135,27 @@ function generateMazeKruskal(m) {
         // TWO empty neighbors -- any less/more and it wouldn't make sense
         if(n0 && n1 && !extra) {
             var setsAreEqual = true;
-            var set0 = n0.containingSet;
-            var set1 = n1.containingSet;
-
-            // Check equality of containing sets
-            if (set0.length == set1.length) {
-                for(var i=0; i<set0.length; i++) {
-                    if(!set0[i].equals(set1[i])) {
-                        setsAreEqual = false;
-                        break;
-                    }
-                }
-            } else {
-                setsAreEqual = false;
-            }
+            var set0 = n0.containingSet.set;
+            var set1 = n1.containingSet.set;
 
             // Check if the spaces are joined or not
-            if(!setsAreEqual) {
-                var newSet = set0.concat(set1);
-
+            if(set0 !== set1) {
+                
                 m[edge.y][edge.x].convertToEmpty();
-                m[edge.y][edge.x].containingSet = newSet;
 
-                // TODO: Speed things up by avoiding this step using a container object
-                for(var i=0; i<newSet.length; i++) {
-                    newSet[i].containingSet = newSet;
-                }
+                // Array of length 2, the smaller array is at 0, bigger is at 1
+                var setsBySize = set0.length > set1.length ? [set1, set0] : [set0, set1];
+
+                var setContainer = setsBySize[1][0].containingSet;
+                m[edge.y][edge.x].containingSet = setContainer;
+
+                // @setObjects
+                // Rather than have to update every set in every tile, we now only have to
+                // update half at the most -- we can force all tiles in the same set to have
+                // the same containingSet object, so that's the only reference we need to update
+                setsBySize[1][0].containingSet.set = set0.concat(set1); // instantly update all references in the bigger set
+                for(var i=0; i<setsBySize[0].length; i++) // update references in the smaller set
+                    setsBySize[0][i].containingSet = setContainer;
             }
         }
     }
