@@ -6,20 +6,24 @@
     display: inline-block;
     vertical-align: top;
     width: 500px;
+    margin: 15px;
 }
 
 .btn {
-    padding:5px;
+    padding: 5px;
     background-color: #dcdcdc;
     border: 1px solid #666;
     border-radius: 5px;
     color:#000;
     text-decoration:none;
-    margin: 10px 10px 0px 20px;
-    display: block;
-    width: 130px;
+    margin: 10px 10px 0px 0px;
+    display: inline-block;
+    width: 100px;
 }
 
-#ratings {
-    display: inline-block;
+#rating {
+    float: right;
+    margin: 15px 0px 0px 0px;
+    vertical-align: middle;
+    width: 100px;
 }
