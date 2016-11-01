@@ -1,3 +1,56 @@
 ul {
     list-style-type: none;
 }
+
+#uploadDiv {
+    display: inline-block;
+    width: 500px;
+    margin-left: 20px;
+    vertical-align: top;
+}
+
+#mazes {
+    display: inline-block;
+}
+
+h1 {
+    margin: 0px;
+    text-align: center;
+}
+
+.label {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#rightInput {
+    float: right;
+    vertical-align: top;
+    margin-left: 30px;
+}
+
+#leftInput {
+    display: inline-block;
+    margin-left: 30px;
+}
+
+#submit {
+    margin-top: 50px;
+    padding: 2px;
+    background-color: #dcdcdc;
+    border: 1px solid #666;
+    border-radius: 5px;
+    color:#000;
+    text-decoration:none;
+    display: block;
+    width: 130px;
+}
+
+#submit:hover {
+    background-color: lightskyblue;
+}
+
+#uploadBox {
+    width: 500px;
+    display: inline-block;
+    vertical-align: top;
+}
