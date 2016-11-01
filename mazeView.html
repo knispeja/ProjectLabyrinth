@@ -5,6 +5,7 @@
 <head>
 	<title>Project Labyrinth Maze View</title>
 	<link rel="stylesheet" type="text/css" href="css/template.css">
+	<link rel="stylesheet" type="text/css" href="css/mazeView.css">
 	<script src="js/mazeView.js"></script>
 	<script src="js/mazeutils.js"></script>
 </head>
@@ -12,11 +13,11 @@
 <body>
 	<script src="js/template.js"></script>
 	<div id="maze">
-		<span id="mazeData">
-			<h3>Example Title</h3>
-			<p>The description goes here</p>
+		<div id="mazeData">
+			<h3 id="title">Example Title</h3>
+			<p id="desc">The description goes here</p>
 			<form id="rateForm">
-				<select name="ratings">
+				<select id="ratings" name="ratings">
 					<option value="1">1</option>
 					<option value="2">2</option>
 					<option value="3">3</option>
@@ -28,14 +29,16 @@
 					<option value="9">9</option>
 					<option value="10">10</option>
 				</select>
-				<button id="submit" type="button">Give a Rating</button>
+				<button class="btn" id="submit" type="button">Rate It!</button>
 			</form>
-			<button id="download" type="button">Download</button>
-		</span>
-		<span id="mazeImage">
-			<img class="mazePic" src="images/example.jpg" alt="Picture goes here">
-			<p> Rating: 8.3/10 </p>
-		</span>
+			<button class="btn" id="download" type="button">Download</button>
+		</div>
+		<div id="pictureAndRating">
+			<div id="mazeImage">
+				<img class="mazePic" src="images/example.jpg" alt="Picture goes here">
+				<p id="rating"> Rating: 8.3/10 </p>
+			</div>
+		</div>
 	</div>
 </body>
 

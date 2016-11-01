@@ -1,0 +1,25 @@
+#pictureAndRating {
+    display: inline-block;
+}
+
+#mazeData {
+    display: inline-block;
+    vertical-align: top;
+    width: 500px;
+}
+
+.btn {
+    padding:5px;
+    background-color: #dcdcdc;
+    border: 1px solid #666;
+    border-radius: 5px;
+    color:#000;
+    text-decoration:none;
+    margin: 10px 10px 0px 20px;
+    display: block;
+    width: 130px;
+}
+
+#ratings {
+    display: inline-block;
+}
