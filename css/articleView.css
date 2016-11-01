@@ -1,17 +1,28 @@
 #articlePic {
-    float: right;
     margin: 40px;
-    max-width: 1000px;
     overflow: hidden;
-    display: inline-block;
 }
 
 .articleInfo {
-    max-width: 500px;
-    margin-left: 50px;
+    width: 500px;
+    margin: 40px;
     display: inline-block;
 }
 
 #articleDesc {
     max-width: 500px;
+}
+
+#picSpace {
+    height: 800px;
+    width: 800px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#articleContent {
+    margin-left: auto;
+    margin-right: auto;
+    width: 1400px;
 }

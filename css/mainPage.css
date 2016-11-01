@@ -12,11 +12,6 @@
     margin-top: 40px;
 }
 
-.articleSpace {
-    height: 600px;
-    overflow: scroll;
-}
-
 #addArticleLink {
     padding: 10px;
     float: right;
@@ -26,4 +21,3 @@
     margin-right: auto;
     text-align: center;
 }
-
