@@ -1,8 +1,29 @@
 (function () {
     "use strict";
     var apiUrl = "https://localhost:3000/mazes/";
-
+    var allMazes;
     // make ajax call to update this maze
+
+    function getMaze() {
+        $.ajax({
+            url: apiUrl,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (data) {
+                if (data) {
+                    allMazes = data;
+                    //TODO: create a display mazes function
+                    displayMazes(allMazes);
+                } else {
+                    console.log("Maze not Found");
+                }
+            },
+            error: function (request, status, error) {
+                console.log(error, status, request);
+            }
+        });
+    }
+
     function saveMaze(maze) {
         $.ajax({
             url: apiUrl + maze._id,
