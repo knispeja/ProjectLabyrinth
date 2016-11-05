@@ -14,7 +14,7 @@ router.use(methodOverride(function (req, res) {
 }));
 
 // Ready to build API
-router.route('/')
+router.route('/mazes/')
     // GET all Mazes
     .get(function (req, res, next) {
         mongoose.model('Maze').find({}, function (err, mazes) {
@@ -74,8 +74,7 @@ router.param('id', function (req, res, next, id) {
     });
 });
 
-// CHALLENGE:  Implement these API endpoints before next class
-router.route('/:id')
+router.route('/mazes/:id/')
     .get(function (req, res) {
         mongoose.model('Maze').findById(req.id)
             .exec(
@@ -103,7 +102,6 @@ router.route('/:id')
     })
     .put(function (req, res) {
         mongoose.model('Maze').findById(req.id, function (err, maze) {
-            // TODO: add in the maze schema
             maze.title = req.body.title;
             maze.image = req.body.image;
             maze.text = req.body.text;
