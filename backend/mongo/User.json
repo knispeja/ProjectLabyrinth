@@ -1,2 +1,0 @@
-{"_id":{"$oid":"5814f120ac73b37bfe98c3cb"},"userId":"0","email":"test@test.com","password":"password","isAdmin":"true"}
-{"_id":{"$oid":"581e2fd02adeea377957f2a2"},"email":"me@email.com","password":"123456","isAdmin":false}
