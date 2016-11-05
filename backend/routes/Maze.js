@@ -32,14 +32,12 @@ router.route('/')
     .post(function (req, res) { // CONSIDER: can add a next parameter for next middleware to run in the middleware chain
         mongoose.model('Maze').create({
             // TODO: add maze schema here
-            // firstName: req.body.firstName,
-            // lastName: req.body.lastName,
-            // email: req.body.email,
-            // homePhone: req.body.homePhone,
-            // cellPhone: req.body.cellPhone,
-            // birthDay: req.body.birthDay,
-            // website: req.body.website,
-            // address: req.body.address
+            title: req.body.title,
+            image: req.body.image,
+            text: req.body.text,
+            dateTime: req.body.dateTime,
+            userID: req.body.userID,
+            ratings: req.body.ratings
         }, function (err, maze) {
             if (err) {
                 res.send('Problem adding maze to db.'); // CONSIDER: Might want to call next with error.  can add status code and error message.
@@ -106,14 +104,12 @@ router.route('/:id')
     .put(function (req, res) {
         mongoose.model('Maze').findById(req.id, function (err, maze) {
             // TODO: add in the maze schema
-            // contact.firstName = req.body.firstName;
-            // contact.lastName = req.body.lastName;
-            // contact.email = req.body.email;
-            // contact.homePhone = req.body.homePhone;
-            // contact.cellPhone = req.body.cellPhone;
-            // contact.birthDay = req.body.birthDay;
-            // contact.website = req.body.website;
-            // contact.address = req.body.address;
+            maze.title = req.body.title;
+            maze.image = req.body.image;
+            maze.text = req.body.text;
+            maze.dateTime = req.body.dateTime;
+            maze.userID = req.body.userID;
+            maze.ratings = req.body.ratings;
             maze.save(function (err, maze) {
                 if (err) {
                     res.send('Problem adding maze to db.'); // CONSIDER: Might want to call next with error.  can add status code and error message.

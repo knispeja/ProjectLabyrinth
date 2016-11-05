@@ -1,13 +1,29 @@
 var mongoose = require('mongoose');
 //TODO: need to fill out the Schemas
-var ArticleSchema  = new mongoose.Schema({
-    
+var ArticleSchema = new mongoose.Schema({
+    title: String,
+    image: Buffer,
+    text: String,
+    dateTime: Date
+
 });
-var MazeSchema  = new mongoose.Schema({
-    
+var RatingSchema = new mongoose.Schema({
+    rating: Number,
+    userID: Number
 });
-var UserSchema  = new mongoose.Schema({
-    
+var MazeSchema = new mongoose.Schema({
+    title: String,
+    image: Buffer,
+    text: String,
+    dateTime: Date,
+    userID: Number,
+    ratings: [RatingSchema]
+});
+var UserSchema = new mongoose.Schema({
+    email: String,
+    password: String,
+    isAdmin: Boolean
+
 });
 
 mongoose.model('Article', ArticleSchema);

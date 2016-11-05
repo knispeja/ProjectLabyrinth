@@ -32,14 +32,9 @@ router.route('/')
     .post(function (req, res) { // CONSIDER: can add a next parameter for next middleware to run in the middleware chain
         mongoose.model('User').create({
             // TODO: add user schema here
-            // firstName: req.body.firstName,
-            // lastName: req.body.lastName,
-            // email: req.body.email,
-            // homePhone: req.body.homePhone,
-            // cellPhone: req.body.cellPhone,
-            // birthDay: req.body.birthDay,
-            // website: req.body.website,
-            // address: req.body.address
+            email: req.body.email,
+            password: req.body.password,
+            isAdmin: req.body.isAdmin
         }, function (err, user) {
             if (err) {
                 res.send('Problem adding user to db.'); // CONSIDER: Might want to call next with error.  can add status code and error message.
@@ -106,14 +101,9 @@ router.route('/:id')
     .put(function (req, res) {
         mongoose.model('User').findById(req.id, function (err, user) {
             // TODO: add in the user schema
-            // contact.firstName = req.body.firstName;
-            // contact.lastName = req.body.lastName;
-            // contact.email = req.body.email;
-            // contact.homePhone = req.body.homePhone;
-            // contact.cellPhone = req.body.cellPhone;
-            // contact.birthDay = req.body.birthDay;
-            // contact.website = req.body.website;
-            // contact.address = req.body.address;
+            user.email = req.body.email;
+            user.password = req.body.password;
+            user.isAdmin = req.body.isAdmin;
             user.save(function (err, user) {
                 if (err) {
                     res.send('Problem adding user to db.'); // CONSIDER: Might want to call next with error.  can add status code and error message.

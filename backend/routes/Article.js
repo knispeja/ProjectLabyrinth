@@ -32,14 +32,10 @@ router.route('/')
     .post(function (req, res) { // CONSIDER: can add a next parameter for next middleware to run in the middleware chain
         mongoose.model('Article').create({
             // TODO: add schema here
-            // firstName: req.body.firstName,
-            // lastName: req.body.lastName,
-            // email: req.body.email,
-            // homePhone: req.body.homePhone,
-            // cellPhone: req.body.cellPhone,
-            // birthDay: req.body.birthDay,
-            // website: req.body.website,
-            // address: req.body.address
+            title: req.body.title,
+            image: req.body.image,
+            text: req.body.text,
+            dateTime: req.body.dateTime
         }, function (err, article) {
             if (err) {
                 res.send('Problem adding article to db.'); // CONSIDER: Might want to call next with error.  can add status code and error message.
@@ -93,12 +89,7 @@ router.route('/:id')
                     });
                 } else {
                     console.log(article);
-                    // res.status(204);
-                    //res.format({
-                    // json: function () {
                     res.json(article);
-                    //}
-                    // });
                 }
             }
             );
@@ -106,14 +97,10 @@ router.route('/:id')
     .put(function (req, res) {
         mongoose.model('Article').findById(req.id, function (err, article) {
             // TODO: add in the article schema
-            // contact.firstName = req.body.firstName;
-            // contact.lastName = req.body.lastName;
-            // contact.email = req.body.email;
-            // contact.homePhone = req.body.homePhone;
-            // contact.cellPhone = req.body.cellPhone;
-            // contact.birthDay = req.body.birthDay;
-            // contact.website = req.body.website;
-            // contact.address = req.body.address;
+            article.title = req.body.title;
+            article.image = req.body.image;
+            article.text = req.body.text;
+            article.dateTime = req.body.dateTime;
             article.save(function (err, article) {
                 if (err) {
                     res.send('Problem adding article to db.'); // CONSIDER: Might want to call next with error.  can add status code and error message.
