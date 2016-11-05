@@ -102,12 +102,18 @@ router.route('/:id/')
     })
     .put(function (req, res) {
         mongoose.model('Maze').findById(req.id, function (err, maze) {
-            maze.title = req.body.title;
-            maze.image = req.body.image;
-            maze.text = req.body.text;
-            maze.dateTime = req.body.dateTime;
-            maze.userID = req.body.userID;
-            maze.ratings = req.body.ratings;
+            maze.title = req.body.title
+                || maze.title;
+            maze.image = req.body.image
+                || maze.image;
+            maze.text = req.body.text
+                || maze.text;
+            maze.dateTime = req.body.dateTime
+                || maze.dateTime;
+            maze.userID = req.body.userID
+                || maze.userID;
+            maze.ratings = req.body.ratings
+                || maze.ratings;
             maze.save(function (err, maze) {
                 if (err) {
                     res.send('Problem adding maze to db.'); // CONSIDER: Might want to call next with error.  can add status code and error message.

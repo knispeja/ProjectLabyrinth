@@ -15,34 +15,35 @@ router.use(methodOverride(function (req, res) {
 
 // Ready to build API
 router.route('/')
-    // GET all Articles
+    // GET all users
     .get(function (req, res, next) {
-        mongoose.model('Article').find({}, function (err, articles) {
+        console.log(res);
+        mongoose.model('User').find({}, function (err, users) {
             if (err) {
                 return console.log(err); // CONSIDER: Might want to call next with error.  can add status code and error message.
             } else {
                 res.format({
                     json: function () {
-                        res.json(articles);
+                        res.json(users);
                     }
                 });
+                console.log(req);
             }
         });
     })
     .post(function (req, res) { // CONSIDER: can add a next parameter for next middleware to run in the middleware chain
-        mongoose.model('Article').create({
-            // TODO: add schema here
-            title: req.body.title,
-            image: req.body.image,
-            text: req.body.text,
-            dateTime: req.body.dateTime
-        }, function (err, article) {
+        mongoose.model('User').create({
+            // TODO: add user schema here
+            email: req.body.email,
+            password: req.body.password,
+            isAdmin: req.body.isAdmin
+        }, function (err, user) {
             if (err) {
-                res.send('Problem adding article to db.'); // CONSIDER: Might want to call next with error.  can add status code and error message.
+                res.send('Problem adding user to db.'); // CONSIDER: Might want to call next with error.  can add status code and error message.
             } else {
                 res.format({
                     json: function () {
-                        res.json(article);
+                        res.json(user);
                     }
                 });
             }
@@ -51,8 +52,8 @@ router.route('/')
 
 // route middleware to validata :id
 router.param('id', function (req, res, next, id) {
-    mongoose.model('Article').findById(id, function (err, article) {
-        if (err || article === null) {
+    mongoose.model('User').findById(id, function (err, user) {
+        if (err || user === null) {
             res.status(404);
             err = new Error('Not Found');
             err.status = 404;
@@ -73,11 +74,11 @@ router.param('id', function (req, res, next, id) {
 });
 
 // CHALLENGE:  Implement these API endpoints before next class
-router.route('/:id/')
+router.route('/:id')
     .get(function (req, res) {
-        mongoose.model('Article').findById(req.id)
+        mongoose.model('User').findById(req.id)
             .exec(
-            function (err, article) {
+            function (err, user) {
                 if (err) {
                     res.status(404);
                     err = new Error('GET error, problem finding data');
@@ -88,26 +89,33 @@ router.route('/:id/')
                         }
                     });
                 } else {
-                    console.log(article);
-                    res.json(article);
+                    console.log(user);
+                    // res.status(204);
+                    //res.format({
+                    // json: function () {
+                    res.json(user);
+                    //}
+                    // });
                 }
             }
             );
     })
     .put(function (req, res) {
-        mongoose.model('Article').findById(req.id, function (err, article) {
-            // TODO: add in the article schema
-            article.title = req.body.title;
-            article.image = req.body.image;
-            article.text = req.body.text;
-            article.dateTime = req.body.dateTime;
-            article.save(function (err, article) {
+        mongoose.model('User').findById(req.id, function (err, user) {
+            // TODO: add in the user schema
+            user.email = req.body.email
+                || user.email;
+            user.password = req.body.password
+                || user.password;
+            user.isAdmin = req.body.isAdmin
+                || user.isAdmin;
+            user.save(function (err, user) {
                 if (err) {
-                    res.send('Problem adding article to db.'); // CONSIDER: Might want to call next with error.  can add status code and error message.
+                    res.send('Problem adding user to db.'); // CONSIDER: Might want to call next with error.  can add status code and error message.
                 } else {
                     res.format({
                         json: function () {
-                            res.json(article);
+                            res.json(user);
                         }
                     });
                 }
@@ -115,12 +123,12 @@ router.route('/:id/')
         });
     })
     .delete(function (req, res) {
-        mongoose.model('Article').findByIdAndRemove(req.id)
+        mongoose.model('User').findByIdAndRemove(req.id)
             .exec(
-            function (err, article) {
+            function (err, user) {
                 if (err) {
                     res.status(404);
-                    err = new Error('Issue deleting article');
+                    err = new Error('Issue deleting user');
                     err.status = 404;
                     res.format({
                         json: function () {

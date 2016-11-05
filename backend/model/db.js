@@ -66,4 +66,6 @@ process.on('SIGTERM', function() {
 
 // BRING IN YOUR SCHEMAS & MODELS
 // Use plural form of name
-require('./labyrinth');
+require('./articles');
+require('./mazes');
+require('./users');

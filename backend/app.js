@@ -9,9 +9,9 @@ var bodyParser = require('body-parser');
 var db = require('./model/db');
 
 var routes = require('./routes/index');
-var article = require('./routes/Article');
-var maze = require('./routes/Maze');
-var user = require('./routes/User');
+var article = require('./routes/articles');
+var maze = require('./routes/mazes');
+var user = require('./routes/users');
 
 var app = express();
 
