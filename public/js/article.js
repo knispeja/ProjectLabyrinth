@@ -1,6 +1,6 @@
 (function () {
     "use strict";
-    var apiUrl = "https://localhost:3000/articles";
+    var apiUrl = "https://localhost:3000/articles/";
 
     function createArticle(article) {
         $.ajax({
