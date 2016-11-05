@@ -14,7 +14,7 @@ router.use(methodOverride(function (req, res) {
 }));
 
 // Ready to build API
-router.route('/articles/')
+router.route('/')
     // GET all Articles
     .get(function (req, res, next) {
         mongoose.model('Article').find({}, function (err, articles) {
@@ -73,7 +73,7 @@ router.param('id', function (req, res, next, id) {
 });
 
 // CHALLENGE:  Implement these API endpoints before next class
-router.route('/articles/:id/')
+router.route('/:id/')
     .get(function (req, res) {
         mongoose.model('Article').findById(req.id)
             .exec(

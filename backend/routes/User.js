@@ -14,10 +14,11 @@ router.use(methodOverride(function (req, res) {
 }));
 
 // Ready to build API
-router.route('/users/')
+router.route('/')
     // GET all users
     .get(function (req, res, next) {
-        mongoose.model('User').find({}, function (err, Users) {
+        console.log(req.body);
+        mongoose.model('User').find({}, function (err, users) {
             if (err) {
                 return console.log(err); // CONSIDER: Might want to call next with error.  can add status code and error message.
             } else {
@@ -72,7 +73,7 @@ router.param('id', function (req, res, next, id) {
 });
 
 // CHALLENGE:  Implement these API endpoints before next class
-router.route('/users/:id')
+router.route('/:id')
     .get(function (req, res) {
         mongoose.model('User').findById(req.id)
             .exec(

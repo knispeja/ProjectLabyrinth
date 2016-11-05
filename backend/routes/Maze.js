@@ -14,7 +14,7 @@ router.use(methodOverride(function (req, res) {
 }));
 
 // Ready to build API
-router.route('/mazes/')
+router.route('/')
     // GET all Mazes
     .get(function (req, res, next) {
         mongoose.model('Maze').find({}, function (err, mazes) {
@@ -74,7 +74,7 @@ router.param('id', function (req, res, next, id) {
     });
 });
 
-router.route('/mazes/:id/')
+router.route('/:id/')
     .get(function (req, res) {
         mongoose.model('Maze').findById(req.id)
             .exec(

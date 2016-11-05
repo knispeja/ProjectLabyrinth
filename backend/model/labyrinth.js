@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-//TODO: need to fill out the Schemas
 var ArticleSchema = new mongoose.Schema({
     title: String,
     image: Buffer,
