@@ -1,10 +1,9 @@
 (function () {
     "use strict";
     var apiUrl = "https://localhost:3000/mazes/";
-    var maze;
-    
+
     // make ajax call to update this maze
-    function saveMaze() {
+    function saveMaze(maze) {
         $.ajax({
             url: apiUrl + maze._id,
             type: 'PUT',
@@ -25,7 +24,7 @@
     }
 
     // make ajax call to add new maze to db
-    function createMaze() {
+    function createMaze(maze) {
         $.ajax({
             url: apiUrl,
             type: 'POST',
@@ -47,7 +46,7 @@
     }
 
     // make ajax call to delete this maze
-    function deleteMaze() {
+    function deleteMaze(maze) {
         $.ajax({
             url: apiUrl + maze._id,
             type: 'DELETE',
