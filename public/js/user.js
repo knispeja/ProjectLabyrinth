@@ -3,7 +3,7 @@
 
     var MIN_PASSWORD_LENGTH = 4;
 
-    var apiUrl ="https://localhost:3000/users/";
+    var apiUrl ="http://localhost:3000/users/";
     var currentUser;
 
     // Make ajax call to add new user to db
@@ -73,7 +73,7 @@
 
             createUser({
                 email: email,
-                psswd: pass
+                password: pass
             });
             
             window.location = "login.html";

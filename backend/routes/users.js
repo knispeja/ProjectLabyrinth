@@ -17,7 +17,6 @@ router.use(methodOverride(function (req, res) {
 router.route('/')
     // GET all users
     .get(function (req, res, next) {
-        console.log(res);
         mongoose.model('User').find({}, function (err, users) {
             if (err) {
                 return console.log(err); // CONSIDER: Might want to call next with error.  can add status code and error message.
@@ -88,7 +87,6 @@ router.route('/:id')
                         }
                     });
                 } else {
-                    console.log(user);
                     // res.status(204);
                     //res.format({
                     // json: function () {
