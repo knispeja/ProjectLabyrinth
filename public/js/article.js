@@ -60,6 +60,21 @@
         $("#articlePic").attr("src", "data:image/jpg;base64," /*+ something here?*/);
     }
 
+    // results will be an array of objects that we will display on the search results page
+    // assuming results are already filtered
+    function showSearchResults(results) {
+        results.forEach(function (result) {
+            $("$searchResults").append(
+                "<span class=\"result\">" +
+                "<a href=\"articleView.html\">" +
+                // still need to figure out image stuff here
+                "<img class=\"mazePic\" src=\"" + result.image +
+                "\" alt=\"Picture goes here\">" +
+                "</a></span>"
+            );
+        });
+    }
+
     $('#submit').click(function () {
         var article = {
             title: $("#articleTitle").val(),
