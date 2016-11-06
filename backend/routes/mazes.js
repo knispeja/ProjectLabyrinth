@@ -2,7 +2,8 @@ var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'), //need mongodb connection
     bodyParser = require('body-parser'), // parse info from POST data
-    methodOverride = require('method-override'); // used to manipulate POST data
+    methodOverride = require('method-override'), // used to manipulate POST data
+    fs = require('fs'); //used to translate image into buffer
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(methodOverride(function (req, res) {
@@ -33,7 +34,7 @@ router.route('/')
         mongoose.model('Maze').create({
             // TODO: add maze schema here
             title: req.body.title,
-            image: req.body.image,
+            image: fs.readFileSync(req.body.image),
             text: req.body.text,
             dateTime: req.body.dateTime,
             userID: req.body.userID,
