@@ -15,7 +15,7 @@
                 if (data) {
                     return false;
                 } else {
-                    console.log("Maze not Found");
+                    console.log("login not Found");
                 }
             },
             error: function (request, status, error) {
