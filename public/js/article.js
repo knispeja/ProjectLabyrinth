@@ -78,7 +78,7 @@
     $('#submit').click(function () {
         var article = {
             title: $("#articleTitle").val(),
-            image: $("#imageUploaded")[0].files(0),
+            image: $("#imageUploaded").files[0],
             text: $("#description").val(),
             dateTime: new Date()
         }
