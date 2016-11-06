@@ -24,11 +24,14 @@
         });
     }
 
-    $("#submit").click(function () {
-        var login = {
-            email: $("#Email").val(),
-            password: $("#Password").val()
-        };
-        sendlogindata(login);
+    $(document).ready(function () {
+        $("#submit").click(function () {
+            var login = {
+                email: $("#Email").val(),
+                password: $("#Password").val()
+            };
+            sendlogindata(login);
+        });
     });
+
 })();
