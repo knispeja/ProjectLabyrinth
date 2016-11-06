@@ -3,7 +3,6 @@ var register = document.getElementById('register');
 register.addEventListener('click', function () { window.location = "addNewAccount.html"; return false; });
 
 var apiUrl = "https://localhost:3000/login/";
-var login;
 
 function sendlogindata(login) {
     $.ajax({
