@@ -1,5 +1,8 @@
 (function(){
     "use strict";
+
+    var MIN_PASSWORD_LENGTH = 4;
+
     var apiUrl ="https://localhost:3000/users/";
     var currentUser;
 
@@ -41,4 +44,39 @@
         });
     }
 
+    function alertUser(text) {
+        alert(text); // TODO: actually put text on page
+    }
+
+    $(document).ready(function() {
+        $("#submit").click(function () {
+
+            var email = $("#email").val();
+            var pass = $("#pwd").val();
+            var passV = $("#pwdVerified").val();
+
+            if (pass.length < MIN_PASSWORD_LENGTH) {
+                alertUser(
+                    "Password is too short. Must be at least " + 
+                    MIN_PASSWORD_LENGTH +
+                    " characters long."
+                    );
+                return;
+            }
+            else if (pass !== passV) {
+                alertUser("Passwords do not match.");
+                return;
+            } else if (email.length < 3) {
+                alertUser("Please enter an email.");
+                return;
+            }
+
+            createUser({
+                email: email,
+                psswd: pass
+            });
+            
+            window.location = "login.html";
+        });
+    });
 })();
