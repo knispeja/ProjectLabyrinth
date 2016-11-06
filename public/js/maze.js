@@ -81,4 +81,20 @@
         });
         return;
     }
+
+    $(".mazeLink").click(function () {
+        window.location.href = "./mazeView.html";
+        return;
+    });
+
+    $("#submit").click(function () {
+        var maze = {
+            title: $("#mazeTitle").val(),
+            image: $("#imageUploaded")[0].files[0],
+            text: $("#mazeDesc").val(),
+            dateTime: new Date(),
+            ratings: []
+        };
+        createMaze(maze);
+    });
 })();
