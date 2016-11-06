@@ -1,6 +1,6 @@
 (function () {
     "use strict";
-    var apiUrl = "https://localhost:3000/mazes/";
+    var apiUrl = "http://localhost:3000/mazes/";
     var allMazes;
     // make ajax call to update this maze
 
