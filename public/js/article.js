@@ -40,4 +40,27 @@
         });
     }
 
-}); 
+    function createArticleOnPage(article) {
+        $(".articleSpace").append(
+            "<div class=\"article\">" +
+            "<h1>" + article.title + "</h1>" +
+            "<img class=\"mazePic\" src=\"" +
+            article.image + "\" alt=\"Picture goes here\">" +
+            "<p>" + article.text + "</p>" +
+            "<a href=\"articleView.html\"><div id=\"articleReadMore\">Read More!</div></a></div>"
+        );
+    }
+
+    $('#submit').click(function() {
+        var article = {
+            title: $("#articleTitle").val(),
+            image: $("#imageUploaded")[0].files(0),
+            text: $("#description").val(),
+            dateTime: new Date()
+        }
+        createArticle(article);
+        createArticleOnPage(article);
+        window.location.href = "./homePage.html";
+    });
+
+})(); 
