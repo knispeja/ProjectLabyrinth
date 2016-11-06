@@ -19,7 +19,7 @@ router.route('/')
         mongoose.model('User').findOne({ 'email': req.body.email}, 'password', function (err, user) {
             if (err) return console.log(err);
             if (user.password === req.body.password){
-               res.redirect('../homePage.html');
+               res.redirect('./homePage.html');
             }
         });
     });
