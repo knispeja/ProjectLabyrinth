@@ -73,7 +73,7 @@
 
             createUser({
                 email: email,
-                psswd: pass
+                password: pass
             });
             
             window.location = "login.html";
