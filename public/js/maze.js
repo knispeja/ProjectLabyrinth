@@ -82,8 +82,17 @@
         return;
     }
 
+    function addMazeToPage(maze) {
+        $("#mazeList").append(
+            "<li>"+ 
+                "<span class=\"mazeEntry\"> <img class=\"mazePic\" src=\"" +
+                maze.image + "\" alt=\"Maze picture\"><br/><a class=\"mazeLink\"" +
+                + " href=\"mazeView.html\">Maze Link</a>"
+            + "</span></li>"
+        );
+    }
+
     $(".mazeLink").click(function () {
-        window.location.href = "./mazeView.html";
         return;
     });
 
@@ -96,5 +105,6 @@
             ratings: []
         };
         createMaze(maze);
+        addMazeToPage(maze);
     });
 })();
