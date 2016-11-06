@@ -53,8 +53,7 @@
             dataType: 'JSON',
             success: function (data) {
                 if (data) {
-                    // redirect to index.html
-                    window.location.href = './index.html';
+                    window.location.href = './userMazes.html';
                     return false;
                 } else {
                     console.log("Maze not Created/Retrived");
