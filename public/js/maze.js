@@ -86,13 +86,13 @@
         $("#mazeList").append(
             "<li>"+ 
                 "<span class=\"mazeEntry\"> <img class=\"mazePic\" src=\"" +
-                maze.image + "\" alt=\"Maze picture\"><br/><a class=\"mazeLink\"" +
-                + " href=\"mazeView.html\">Maze Link</a>"
+                maze.image + "\" alt=\"Maze picture\"><br/>"
             + "</span></li>"
         );
     }
 
-    $(".mazeLink").click(function () {
+    $(".mazePic").click(function () {
+        window.location.href = "./mazeView.html";
         return;
     });
 
