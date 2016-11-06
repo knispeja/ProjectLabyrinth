@@ -27,7 +27,6 @@ router.route('/')
                         res.json(users);
                     }
                 });
-                console.log(req);
             }
         });
     })
