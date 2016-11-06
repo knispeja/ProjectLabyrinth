@@ -34,24 +34,33 @@
                     console.log("Cannot find article.");
                 }
             },
-            error: function(request, status, error) {
+            error: function (request, status, error) {
                 console.log(error, status, request);
             }
         });
     }
 
+    // use this for putting articles on the homePage and archivePages
     function createArticleOnPage(article) {
         $(".articleSpace").append(
             "<div class=\"article\">" +
             "<h1>" + article.title + "</h1>" +
             "<img class=\"mazePic\" src=\"" +
             article.image + "\" alt=\"Picture goes here\">" +
-            "<p>" + article.text + "</p>" +
+            "<p>" + article.text.substring(0, 50) + "...</p>" +
             "<a href=\"articleView.html\"><div id=\"articleReadMore\">Read More!</div></a></div>"
         );
     }
 
-    $('#submit').click(function() {
+    // use this for setting the article up in the articleView page
+    function setArticleView(article) {
+        document.getElementById("articleTitle").textContent = article.title;
+        document.getElementById("articleDesc").textContent = article.text;
+        //still need to figure out how to insert images
+        $("#articlePic").attr("src", "data:image/jpg;base64," /*+ something here?*/);
+    }
+
+    $('#submit').click(function () {
         var article = {
             title: $("#articleTitle").val(),
             image: $("#imageUploaded")[0].files(0),
