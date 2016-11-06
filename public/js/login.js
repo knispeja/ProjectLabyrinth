@@ -2,7 +2,7 @@
     var submit = document.getElementById('submit');
     var register = document.getElementById('register');
 
-    var apiUrl = "https://localhost:3000/login/";
+    var apiUrl = "http://localhost:3000/login/";
 
     function sendlogindata(login) {
         $.ajax({
