@@ -16,10 +16,14 @@ router.use(methodOverride(function (req, res) {
 // Ready to build API
 router.route('/')
     .get(function (req, res) { // CONSIDER: can add a next parameter for next middleware to run in the middleware chain
-        mongoose.model('User').findOne({ 'email': req.body.email}, 'password', function (err, user) {
+        mongoose.model('User').findOne({ 'email': req.body.email }, 'password', function (err, user) {
             if (err) return console.log(err);
-            if (user.password === req.body.password){
-               res.redirect('./homePage.html');
+            if (user.password === req.body.password) {
+                res.format({
+                    json: function () {
+                        res.json(users);
+                    }
+                });
             }
         });
     });
