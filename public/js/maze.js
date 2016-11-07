@@ -98,7 +98,7 @@
     $("#submit").click(function () {
         var maze = {
             title: $("#mazeTitle").val(),
-            image: $("#imageUploaded")[0].files[0],
+            image: "file="+$("#imageUploaded")[0].files[0],
             text: $("#mazeDesc").val(),
             dateTime: new Date(),
             ratings: []

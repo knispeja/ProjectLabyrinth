@@ -32,9 +32,8 @@ router.route('/')
     })
     .post(function (req, res) { // CONSIDER: can add a next parameter for next middleware to run in the middleware chain
         mongoose.model('Maze').create({
-            // TODO: add maze schema here
             title: req.body.title,
-            image: fs.readFileSync(req.body.image),
+            image: req.body.image,
             text: req.body.text,
             dateTime: req.body.dateTime,
             userID: req.body.userID,
