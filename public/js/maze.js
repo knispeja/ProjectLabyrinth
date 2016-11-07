@@ -46,11 +46,14 @@
 
     // make ajax call to add new maze to db
     function createMaze(maze) {
+        for(var a of maze){
+            console.log(a);
+        }
         $.ajax({
             url: apiUrl,
             type: 'POST',
             data: maze,
-            dataType: 'JSON',
+            // dataType: 'JSON',
             success: function (data) {
                 if (data) {
                     window.location.href = './userMazes.html';
@@ -61,7 +64,9 @@
             },
             error: function (request, status, error) {
                 console.log(error, status, request);
-            }
+            },
+            processData: false,
+            contentType: false
         });
     }
 
@@ -96,14 +101,13 @@
     });
 
     $("#submit").click(function () {
-        var maze = {
-            title: $("#mazeTitle").val(),
-            image: "file="+$("#imageUploaded")[0].files[0],
-            text: $("#mazeDesc").val(),
-            dateTime: new Date(),
-            ratings: []
-        };
-        createMaze(maze);
-        addMazeToPage(maze);
+        var mazeData = new FormData();
+        mazeData.append("title", $("#mazeTitle").val());
+        mazeData.append("image", $("#imageUploaded")[0].files[0]);
+        mazeData.append("text", $("#mazeDesc").val());
+        mazeData.append("dateTime", new Date());
+        mazeData.append("ratings", []);
+        createMaze(mazeData);
+        //addMazeToPage(maze);
     });
 })();

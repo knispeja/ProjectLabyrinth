@@ -31,6 +31,7 @@ router.route('/')
         });
     })
     .post(function (req, res) { // CONSIDER: can add a next parameter for next middleware to run in the middleware chain
+        console.log(req.body);
         mongoose.model('Maze').create({
             title: req.body.title,
             image: req.body.image,
