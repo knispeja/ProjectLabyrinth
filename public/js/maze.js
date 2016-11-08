@@ -2,6 +2,7 @@
     "use strict";
     var apiUrl = "http://localhost:3000/mazes/";
     var allMazes;
+    var imageFile;
     // make ajax call to update this maze
 
     function getMaze() {
@@ -46,17 +47,14 @@
 
     // make ajax call to add new maze to db
     function createMaze(maze) {
-        for (var a of maze) {
-            console.log(a);
-        }
         $.ajax({
             url: apiUrl,
             type: 'POST',
             data: maze,
-            // dataType: 'JSON',
+            dataType: 'JSON',
             success: function (data) {
                 if (data) {
-                    window.location.href = './userMazes.html';
+                    addMazeToPage(data);
                     return false;
                 } else {
                     console.log("Maze not Created/Retrived");
@@ -64,9 +62,9 @@
             },
             error: function (request, status, error) {
                 console.log(error, status, request);
-            },
-            processData: false,
-            contentType: false
+            }
+            // processData: false,
+            // contentType: false
         });
     }
 
@@ -101,13 +99,21 @@
     });
 
     $("#submit").click(function () {
-        var mazeData = new FormData();
-        mazeData.append("title", $("#mazeTitle").val());
-        mazeData.append("image", $("#imageUploaded")[0].files[0]);
-        mazeData.append("text", $("#mazeDesc").val());
-        mazeData.append("dateTime", new Date());
-        mazeData.append("ratings", []);
+        var mazeData = {
+            title: $("#mazeTitle").val(),
+            image: imageFile,
+            text: $("#mazeDesc").val(),
+            dateTime: new Date(),
+            ratings: []
+        };
         createMaze(mazeData);
-        //addMazeToPage(maze);
+    });
+    $("#imageUploaded").change(function (){
+        var file = $("#imageUploaded")[0].files[0];
+        var reader = new FileReader();
+        reader.addEventListener('load', function (event){
+            imageFile = event.target.result;
+        });
+        reader.readAsDataURL(file);
     });
 })();
