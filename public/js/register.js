@@ -45,30 +45,37 @@
     }
 
     function alertUser(text) {
-        alert(text); // TODO: actually put text on page
+        document.getElementById("alert").innerHTML = text;
+    }
+
+    // Taken from here: http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
+    function validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
     }
 
     $(document).ready(function() {
-        $("#submit").click(function () {
+        $("#regForm").submit(function () {
 
             var email = $("#email").val();
             var pass = $("#pwd").val();
             var passV = $("#pwdVerified").val();
 
-            if (pass.length < MIN_PASSWORD_LENGTH) {
+            if (!validateEmail(email)) {
+                alertUser("Please enter an email.");
+                return false;
+            }
+            else if (pass.length < MIN_PASSWORD_LENGTH) {
                 alertUser(
                     "Password is too short. Must be at least " + 
                     MIN_PASSWORD_LENGTH +
                     " characters long."
                     );
-                return;
+                return false;
             }
             else if (pass !== passV) {
                 alertUser("Passwords do not match.");
-                return;
-            } else if (email.length < 3) {
-                alertUser("Please enter an email.");
-                return;
+                return false;
             }
 
             createUser({

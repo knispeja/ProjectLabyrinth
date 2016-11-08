@@ -13,6 +13,13 @@ body {
     text-align: center;
 }
 
+#alert {
+    padding: 10px;
+    text-align: center;
+    /* color: #FF4B00; < -- logo orange */
+    color: yellow;
+}
+
 .in {
     padding: 10px;
     float: right;

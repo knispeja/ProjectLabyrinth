@@ -3,29 +3,33 @@
 <html>
 
 <head>
-	<title>Labyrinth Create Account</title>
+	<title>Labyrinth Registration</title>
 	<link rel="stylesheet" type="text/css" href="css/formStyle.css">
     <link rel="stylesheet" type="text/css" href="css/template.css">
 	<script src="js/jquery-3.1.1.js"></script>
-	<script src="js/user.js"></script>
+	<script src="js/register.js"></script>
 </head>
 
 <body>
 	<script src="js/template.js"></script>
 	<div id="pageTitle">
-		<p>Create New Account</p>
+		<p>Register New Account</p>
 	</div>
-	<form class="entryFields">
+	<form id="regForm" class="entryFields">
 		<p class="label">Email: </p><input class="in" type="text" id="email" value="" >
         <br \>
         <p class="label">Password: </p><input class="in" type="password" id="pwd" value="">
         <br \>
         <p class="label">Verify Password: </p><input class="in" type="password" id="pwdVerified" value="">
         <br \>
+		<div id="submitDiv">
+        	<button id="submit" type="submit">Submit</button>
+		</div>
 	</form>
-	<div id="submitDiv">
-        <button id="submit" type="button">Submit</button>
-	</div>
+
+	<br>
+
+	<p id="alert"></p>
 </body>
 
 </html>
