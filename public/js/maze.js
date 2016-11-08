@@ -54,7 +54,7 @@
             dataType: 'JSON',
             success: function (data) {
                 if (data) {
-                    window.location.href = './userMazes.html';
+                    addMazeToPage(data);
                     return false;
                 } else {
                     console.log("Maze not Created/Retrived");
@@ -107,7 +107,6 @@
             ratings: []
         };
         createMaze(mazeData);
-        //addMazeToPage(maze);
     });
     $("#imageUploaded").change(function (){
         var file = $("#imageUploaded")[0].files[0];
@@ -115,6 +114,6 @@
         reader.addEventListener('load', function (event){
             imageFile = event.target.result;
         });
-        reader.readAsText(file);
+        reader.readAsDataURL(file);
     });
 })();

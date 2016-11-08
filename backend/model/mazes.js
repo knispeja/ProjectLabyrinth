@@ -6,7 +6,7 @@ var RatingSchema = new mongoose.Schema({
 });
 var MazeSchema = new mongoose.Schema({
     title: String,
-    image: {data: Buffer, type: String},
+    image: Buffer,
     text: String,
     dateTime: Date,
     userID: Number,
