@@ -14,8 +14,11 @@ ul {
 }
 
 h1 {
-    margin: 0px 80px 0px 0px;
+    margin: 0px 70px 0px 0px;
     text-align: center;
+    font-family: 'Arial Narrow Bold', sans-serif;
+    font-style: italic;
+    
 }
 
 .label {
@@ -50,10 +53,13 @@ h1 {
 }
 
 #uploadBox {
-    width: 500px;
+    width: 480px;
     vertical-align: top;
     margin-left: auto;
     margin-right: auto;
+    padding-bottom: 10px;
+    padding-left: 65px;
+    border: 2px solid #314c77;
 }
 
 .mazeEntry {
