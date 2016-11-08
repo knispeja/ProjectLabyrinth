@@ -21,6 +21,9 @@ router.route('/')
             if (err) return console.log(err);
             if (user) {
                 if (user.password === req.body.password) {
+                    // correct username/password
+                    req.session.user = user;
+                    delete req.session.user.password;
                     res.format({
                         json: function () {
                             res.json({ "reply": true });
@@ -29,6 +32,7 @@ router.route('/')
                     return;
                 }
                 else {
+                    // incorrect password
                     res.format({
                         json: function () {
                             res.json({ "reply": false});
@@ -37,6 +41,7 @@ router.route('/')
                 }
             }
             else {
+                // invalid email
                 res.format({
                     json: function () {
                         res.json({ "reply": "NONE" });
