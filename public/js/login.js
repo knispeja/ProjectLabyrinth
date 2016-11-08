@@ -2,6 +2,10 @@
 
     var apiUrl = "http://localhost:3000/login/";
 
+    function alertUser(text) {
+        document.getElementById("alert").innerHTML = text;
+    }
+
     function sendlogindata(login) {
         $.ajax({
             url: apiUrl,
@@ -16,15 +20,15 @@
                         return;
                     }
                     else if(data.reply === false){
-                        alert("Hello, the password entered was incorrect");
+                        alertUser("Incorrect password");
                         return false;
                     }
                     else if(data.reply === "NONE"){
-                        alert("Hello, we have no user that has that email ID. Please check your email or register your email");
+                        alertUser("Incorrect email. If you don't have an account, you can register at the link above.");
                         return false;
                     }
                 } else {
-                    console.log("login not Found");
+                    console.log("Login not found");
                 }
             },
             error: function (request, status, error) {
@@ -34,12 +38,13 @@
     }
 
     $(document).ready(function () {
-        $("#submit").click(function () {
+        $("#regForm").submit(function () {
             var login = {
-                email: $("#Email").val(),
-                password: $("#Password").val()
+                email: $("#email").val(),
+                password: $("#password").val()
             };
             sendlogindata(login);
+            return false;
         });
     });
 
