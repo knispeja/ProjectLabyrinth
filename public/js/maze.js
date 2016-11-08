@@ -46,7 +46,7 @@
 
     // make ajax call to add new maze to db
     function createMaze(maze) {
-        for(var a of maze){
+        for (var a of maze) {
             console.log(a);
         }
         $.ajax({
@@ -87,11 +87,10 @@
     }
 
     function addMazeToPage(maze) {
-        $("#mazeList").append(
-            "<li>"+ 
-                "<span class=\"mazeEntry\"> <img class=\"mazePic\" src=\"" +
-                maze.image + "\" alt=\"Maze picture\"><br/>"
-            + "</span></li>"
+        $("#mazes").append(
+            "<span class=\"mazeEntry\"> <img class=\"mazePic\" src=\"" +
+            maze.image + "\" alt=\"Maze picture\"><br/>"
+            + "</span>"
         );
     }
 

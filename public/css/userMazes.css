@@ -55,3 +55,9 @@ h1 {
     margin-left: auto;
     margin-right: auto;
 }
+
+.mazeEntry {
+    width: 400px;
+    height: 400px;
+    margin: 40px;
+}
