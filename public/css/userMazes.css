@@ -10,11 +10,11 @@ ul {
 }
 
 #mazes {
-    display: inline-block;
+    margin-top: 40px;
 }
 
 h1 {
-    margin: 0px;
+    margin: 0px 80px 0px 0px;
     text-align: center;
 }
 
@@ -51,6 +51,7 @@ h1 {
 
 #uploadBox {
     width: 500px;
-    display: inline-block;
     vertical-align: top;
+    margin-left: auto;
+    margin-right: auto;
 }
