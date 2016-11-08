@@ -14,7 +14,6 @@
             dataType: 'JSON',
             success: function (data) {
                 if (data) {
-                    console.log(data);
                     if (data.reply === true) {
                         window.location.href = "./homePage.html";
                         return;

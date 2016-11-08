@@ -3,7 +3,8 @@
 
     var MIN_PASSWORD_LENGTH = 4;
 
-    var apiUrl ="http://localhost:3000/users/";
+    var apiUrl = "http://localhost:3000/users/";
+    var loginUrl = "http://localhost:3000/login/";
     var currentUser;
 
     // Make ajax call to add new user to db
@@ -15,7 +16,6 @@
             dataType: 'JSON',
             success: function(data) {
                 if(data) {
-                    window.location.href = "./homePage.html";
                     return false;
                 }
                 else{
@@ -23,9 +23,40 @@
                 }
             }
         });
+
+        window.location = "login.html";
     }
 
-    // make ajax call to get a user from the db
+    // Check if user already exists
+    function continueIfUserExists(email, pass) {
+
+        var login = {
+            email: email,
+            password: ""
+        };
+
+        $.ajax({
+            url: loginUrl,
+            type: 'POST',
+            data: login,
+            dataType: 'JSON',
+            success: function (data) {
+                if (data && data.reply === "NONE") {
+                    createUser({
+                        email: email,
+                        password: pass
+                    });
+                } else {
+                    alertUser("Email already taken. Forgot your password? That sucks.");
+                }
+            },
+            error: function (request, status, error) {
+                console.log(error, status, request);
+            }
+        });
+    }
+
+    // Make ajax call to get a user from the db
     function getUser(userID) {
         $.ajax({
             url: apiUrl + userID,
@@ -96,12 +127,8 @@
                 return false;
             }
 
-            createUser({
-                email: email,
-                password: pass
-            });
-            
-            window.location = "login.html";
+            continueIfUserExists(email, pass);
+            return false;
         });
     });
 })();
