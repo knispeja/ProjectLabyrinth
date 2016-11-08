@@ -54,27 +54,45 @@
         return re.test(email);
     }
 
+    var defaultFormBorder;
+    function resetFormBorders() {
+        document.getElementById("email").style.borderColor = defaultFormBorder;
+        document.getElementById("pwd").style.borderColor = defaultFormBorder;
+        document.getElementById("pwdVerified").style.borderColor = defaultFormBorder;
+    }
+
     $(document).ready(function() {
+
+        defaultFormBorder = document.getElementById("pwd").style.borderColor;
+
         $("#regForm").submit(function () {
 
             var email = $("#email").val();
             var pass = $("#pwd").val();
             var passV = $("#pwdVerified").val();
 
-            if (!validateEmail(email)) {
-                alertUser("Please enter an email.");
-                return false;
+            resetFormBorders();
+            var alertText;
+            if (pass !== passV) {
+                alertText = "Passwords do not match.";
+                document.getElementById("pwd").style.borderColor = "red";
+                document.getElementById("pwdVerified").style.borderColor = "red";
             }
             else if (pass.length < MIN_PASSWORD_LENGTH) {
-                alertUser(
+                alertText = 
                     "Password is too short. Must be at least " + 
                     MIN_PASSWORD_LENGTH +
-                    " characters long."
-                    );
-                return false;
+                    " characters long.";
+                document.getElementById("pwd").style.borderColor = "red";
+                document.getElementById("pwdVerified").style.borderColor = "red";
             }
-            else if (pass !== passV) {
-                alertUser("Passwords do not match.");
+            if (!validateEmail(email)) {
+                alertText = "Please enter a valid email.";
+                document.getElementById("email").style.borderColor = "red";
+            }
+
+            if (alertText) {
+                alertUser(alertText);
                 return false;
             }
 
