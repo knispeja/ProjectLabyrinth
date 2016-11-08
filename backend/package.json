@@ -8,6 +8,8 @@
   "dependencies": {
     "GridFS": "^0.3.0",
     "body-parser": "~1.15.1",
+    "busboy": "^0.2.13",
+    "connect-busboy": "0.0.2",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.1",
     "debug": "~2.2.0",

@@ -3,7 +3,8 @@ var express = require('express'),
     mongoose = require('mongoose'), //need mongodb connection
     bodyParser = require('body-parser'), // parse info from POST data
     methodOverride = require('method-override'), // used to manipulate POST data
-    fs = require('fs'); //used to translate image into buffer
+    busboy = require('connect-busboy'); //Used for multipart/form-data
+
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(methodOverride(function (req, res) {
@@ -13,6 +14,7 @@ router.use(methodOverride(function (req, res) {
         return method;
     }
 }));
+router.use(busboy());
 
 // Ready to build API
 router.route('/')
@@ -31,7 +33,14 @@ router.route('/')
         });
     })
     .post(function (req, res) { // CONSIDER: can add a next parameter for next middleware to run in the middleware chain
+        // console.log(req.body);
+        // console.log(req.headers);
+        // console.log(req.busboy);
+        // console.log(req.files);
+        // var bb = new Busboy({ headers: req.headers});
+        // console.log(bb);
         console.log(req.body);
+
         mongoose.model('Maze').create({
             title: req.body.title,
             image: req.body.image,
