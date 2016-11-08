@@ -15,7 +15,12 @@
                         window.location.href = "./homePage.html";
                         return;
                     }
-                    else {
+                    else if(data.reply === true){
+                        alert("Hello, the password entered was incorrect");
+                        return false;
+                    }
+                    else if(data.reply === "NONE"){
+                        alert("Hello, we have no user that has that email ID. Please check your email or register your email");
                         return false;
                     }
                 } else {

@@ -26,16 +26,23 @@ router.route('/')
                             res.json({ "reply": true });
                         }
                     });
-                    return console.log("found user:" + user);
+                    return;
+                }
+                else {
+                    res.format({
+                        json: function () {
+                            res.json({ "reply": false});
+                        }
+                    });
                 }
             }
             else {
                 res.format({
                     json: function () {
-                        res.json({ "reply": "NONE"});
+                        res.json({ "reply": "NONE" });
                     }
                 });
-                return console.log("User not found");
+                return;
             }
         });
     });
