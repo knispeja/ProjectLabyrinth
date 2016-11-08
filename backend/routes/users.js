@@ -30,11 +30,12 @@ router.route('/')
         });
     })
     .post(function (req, res) { // CONSIDER: can add a next parameter for next middleware to run in the middleware chain
+
+        // TODO: check if user email is already taken
         mongoose.model('User').create({
-            // TODO: add user schema here
             email: req.body.email,
             password: req.body.password,
-            isAdmin: req.body.isAdmin
+            isAdmin: false
         }, function (err, user) {
             if (err) {
                 res.send('Problem adding user to db.'); // CONSIDER: Might want to call next with error.  can add status code and error message.
