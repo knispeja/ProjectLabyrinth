@@ -5,12 +5,19 @@
     function sendlogindata(login) {
         $.ajax({
             url: apiUrl,
-            type: 'GET',
+            type: 'POST',
             data: login,
             dataType: 'JSON',
             success: function (data) {
                 if (data) {
-                    return false;
+                    console.log(data);
+                    if (data.reply === true) {
+                        window.location.href = "./homePage.html";
+                        return;
+                    }
+                    else {
+                        return false;
+                    }
                 } else {
                     console.log("login not Found");
                 }

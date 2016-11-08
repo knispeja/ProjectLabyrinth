@@ -15,15 +15,27 @@ router.use(methodOverride(function (req, res) {
 
 // Ready to build API
 router.route('/')
-    .get(function (req, res) { // CONSIDER: can add a next parameter for next middleware to run in the middleware chain
-        mongoose.model('User').findOne({ 'email': req.body.email }, 'password', function (err, pwd) {
+    .post(function (req, res) { // CONSIDER: can add a next parameter for next middleware to run in the middleware chain
+        mongoose.model('User').findOne({ 'email': req.body.email }, 'password', function (err, user) {
+            console.log(user);
             if (err) return console.log(err);
-            if (pwd === req.body.password) {
+            if (user) {
+                if (user.password === req.body.password) {
+                    res.format({
+                        json: function () {
+                            res.json({ "reply": true });
+                        }
+                    });
+                    return console.log("found user:" + user);
+                }
+            }
+            else {
                 res.format({
                     json: function () {
-                        res.json(users);
+                        res.json({ "reply": "NONE"});
                     }
                 });
+                return console.log("User not found");
             }
         });
     });
