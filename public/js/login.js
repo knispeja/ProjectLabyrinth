@@ -15,7 +15,7 @@
                         window.location.href = "./homePage.html";
                         return;
                     }
-                    else if(data.reply === true){
+                    else if(data.reply === false){
                         alert("Hello, the password entered was incorrect");
                         return false;
                     }
