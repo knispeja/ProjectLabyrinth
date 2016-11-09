@@ -10,7 +10,6 @@
             dataType: 'JSON',
             success: function (data) {
                 if (data) {
-                    alert(data.reply);
                     displayMazes(data.reply);
                     return false;
                 } else {
@@ -25,7 +24,7 @@
 
     // URL formatted like "http://normal/url?QUERY" where QUERY is the search query
     function getSearchQuery() {
-        var url = location.href; 
+        var url = decodeURI(location.href); 
         return url.substring(url.indexOf("?") + 1);
     }
 
