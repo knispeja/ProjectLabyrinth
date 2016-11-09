@@ -49,8 +49,7 @@
     function setMazeView(maze) {
         document.getElementById("title").textContent = maze.title;
         document.getElementById("desc").textContent = maze.text;
-        //still need to figure out how to insert images
-        $("#mazePic").attr("src", maze.image);
+        $(".mazePic").attr("src", maze.image);
         $('#rating').text(averageRatings(maze.ratings));
     }
 

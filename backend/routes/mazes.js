@@ -79,6 +79,7 @@ router.route('/:id/')
             );
     })
     .put(function (req, res) {
+        console.log(req.body);
         mongoose.model('Maze').findById(req.id, function (err, maze) {
             maze.title = req.body.title
                 || maze.title;
