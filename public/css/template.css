@@ -32,6 +32,7 @@ body {
 #searchBox {
     height: 15px;
     vertical-align: middle;
+    border-radius: 8px;
 }
 
 #search {
