@@ -50,7 +50,8 @@ body {
 }
 
 .coloredStripe {
-    margin-top: 15px;
-    border-top: 6px solid #314c77;
+    margin-top: 5px;
     margin-bottom: 15px;
+    height: 30px;
+    background: linear-gradient(#9dafb2, #cdd5d6);
 }
