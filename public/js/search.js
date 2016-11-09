@@ -1,16 +1,17 @@
 (function () {
 
-    var apiUrl = "http://localhost:3000/mazes/";
+    var apiUrl = "http://localhost:3000/search/";
 
     function search(query) {
         $.ajax({
-            url: apiUrl + maze._id,
-            type: 'PUT',
-            data: maze,
+            url: apiUrl,
+            type: 'POST',
+            data: {query: query},
             dataType: 'JSON',
             success: function (data) {
                 if (data) {
-                    window.location.href = './index.html';
+                    alert(data.reply);
+                    displayMazes(data.reply);
                     return false;
                 } else {
                     console.log("Maze not Found");
