@@ -7,11 +7,15 @@ body {
     display: inline-block;
     float: right;
     border: 2px solid #1e2126;
+    border-radius: 10px;
     width: 1000px;
+    overflow: hidden;
+    background-color: #b4c2c4;
 }
 
 .headerArea {
     min-width: 1300px;
+    background-color: #9DAFB2;
 }
 
 .nav {
