@@ -14,3 +14,10 @@
     max-width: 400px;
     max-height: 400px;
 }
+
+.result {
+    width: 400px;
+    height: 400px;
+    margin: 40px;
+    display: inline-block;
+}
