@@ -29,8 +29,7 @@
     }
 
     function loadArticle(){
-        var query = window.location.search.substr(1);
-        getArticle(query);
+        getArticle(window.location.search.substr(1));
     }
     $(document).ready(loadArticle);
 })()
