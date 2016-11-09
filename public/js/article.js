@@ -2,6 +2,7 @@
     "use strict";
     var apiUrl = "http://localhost:3000/articles/";
     var newArticle;
+    var imageFile;
 
     function createArticle(article) {
         $.ajax({
@@ -78,13 +79,22 @@
     $('#submit').click(function () {
         var article = {
             title: $("#articleTitle").val(),
-            image: $("#imageUploaded").files[0],
+            image: imageFile,
             text: $("#description").val(),
             dateTime: new Date()
         }
         createArticle(article);
         createArticleOnPage(article);
         window.location.href = "./homePage.html";
+    });
+
+    $("#imageUploaded").change(function () {
+        var file = $("#imageUploaded")[0].files[0];
+        var reader = new FileReader();
+        reader.addEventListener('load', function (event) {
+            imageFile = event.target.result;
+        });
+        reader.readAsDataURL(file);
     });
 
 })(); 
