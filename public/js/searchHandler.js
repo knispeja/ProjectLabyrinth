@@ -3,7 +3,7 @@ function searchHandlerInit() {
 
     searchBox.onkeypress = function (event) {
         if (event.keyCode == 13) {
-            window.location.assign("./searchResults.html" + "?query=" + searchBox.value);
+            window.location.assign("./searchResults.html" + "?" + searchBox.value);
             return false;
         }
     }
