@@ -29,9 +29,10 @@
         articles.forEach(function(article) {
             $("#articleResults").append(
                 "<span class=\"result\">" +
-                "<a href=\"articleView.html\">" +
+                "<h1>" + article.title + "</h1>" +
+                "<a href=\"articleView.html?" + article._id + "\">" +
                 // still need to figure out image stuff here
-                "<img class=\"articlePic\" src=\"" + article.image +
+                "<img class=\"mazePic\" src=\"" + article.image +
                 "\" alt=\"Picture goes here\">" +
                 "</a></span>"
             );
