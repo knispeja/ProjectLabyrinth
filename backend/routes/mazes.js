@@ -21,11 +21,7 @@ router.route('/')
             if (err) {
                 return console.log(err); // CONSIDER: Might want to call next with error.  can add status code and error message.
             } else {
-                res.format({
-                    json: function () {
-                        res.json(mazes);
-                    }
-                });
+                res.json(mazes);
             }
         });
     })
@@ -41,11 +37,7 @@ router.route('/')
             if (err) {
                 res.send('Problem adding maze to db.');
             } else {
-                res.format({
-                    json: function () {
-                        res.json(maze);
-                    }
-                });
+                res.json(maze);
             }
         });
     });
@@ -57,14 +49,7 @@ router.param('id', function (req, res, next, id) {
             res.status(404);
             err = new Error('Not Found');
             err.status = 404;
-            res.format({
-                // html: function(){
-                //     next(err);
-                // },
-                json: function () {
-                    res.json({ message: err.status + ' ' + err });
-                }
-            });
+            res.json({ message: err.status + ' ' + err });
         } else {
             // once validation is done, save new id in the req
             req.id = id;
@@ -82,11 +67,7 @@ router.route('/:id/')
                     res.status(404);
                     err = new Error('GET error, problem finding data');
                     err.status = 404;
-                    res.format({
-                        json: function () {
-                            res.json({ message: err.status + ' ' + err });
-                        }
-                    });
+                    res.json({ message: err.status + ' ' + err });
                 } else {
                     res.json(maze);
                 }
@@ -111,11 +92,7 @@ router.route('/:id/')
                 if (err) {
                     res.send('Problem adding maze to db.'); // CONSIDER: Might want to call next with error.  can add status code and error message.
                 } else {
-                    res.format({
-                        json: function () {
-                            res.json(maze);
-                        }
-                    });
+                    res.json(maze);
                 }
             });
         });
@@ -128,18 +105,10 @@ router.route('/:id/')
                     res.status(404);
                     err = new Error('Issue deleting maze');
                     err.status = 404;
-                    res.format({
-                        json: function () {
-                            res.json({ message: err.status + ' ' + err });
-                        }
-                    });
+                    res.json({ message: err.status + ' ' + err });
                 } else {
                     res.status(204);
-                    res.format({
-                        json: function () {
-                            res.json(null);
-                        }
-                    });
+                    res.json(null);
                 }
             }
             );

@@ -24,13 +24,9 @@ router.route('/')
         mongoose.model('Maze').find({"title": queryReg}, function (err, mazes) {
             mongoose.model('Article').find({"title": queryReg}, function(err, articles) {
             if(err) {console.log(err);}
-                res.format({
-                    json: function () {
-                        res.json({
-                            mazes: mazes,
-                            articles: articles
-                        });
-                    }
+                res.json({
+                    mazes: mazes,
+                    articles: articles
                 });
             });
         });

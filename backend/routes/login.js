@@ -28,31 +28,17 @@ router.route('/')
                 if (user.password === req.body.password) {
                     // correct username/password
                     res.cookie('user', req.body.email);
-
-                    // may want to comment the below out
-                    res.format({
-                        json: function () {
-                            res.json({ "reply": true });
-                        }
-                    });
+                    res.json({ "reply": true });
                     return;
                 }
                 else {
                     // incorrect password
-                    res.format({
-                        json: function () {
-                            res.json({ "reply": false});
-                        }
-                    });
+                    res.json({ "reply": false});
                 }
             }
             else {
                 // invalid email
-                res.format({
-                    json: function () {
-                        res.json({ "reply": "NONE" });
-                    }
-                });
+                res.json({ "reply": "NONE" });
                 return;
             }
         });
