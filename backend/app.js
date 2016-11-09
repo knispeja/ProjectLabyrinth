@@ -6,7 +6,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var session = require('client-sessions');
 var db = require('./model/db');
 
 var routes = require('./routes/index');
@@ -31,22 +30,7 @@ app.use(bodyParser.urlencoded({limit: '10mb', extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// handles client sessions
-app.use(session({
-  cookieName: 'session',
-  secret: 'PA4nHkET8UmBvTfvr2jk', // secret string
-  duration: 60 * 60 * 1000, // 60 minutes in ms
-  activeDuration: 10 * 60 * 1000 // 10 minutes in ms
-}));
-
-// app.use(function(req, res, next) {
-//   if (req.session.user) {
-//     res.setHeader('X-Seen-You', req.session.user.email);
-//   } else {
-//     res.session.
-//   }
-// });
-
+// routes
 app.use('/', routes);
 app.use('/articles', article);
 app.use('/mazes', maze);
@@ -83,6 +67,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;

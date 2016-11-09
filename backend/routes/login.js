@@ -2,7 +2,9 @@ var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'), //need mongodb connection
     bodyParser = require('body-parser'), // parse info from POST data
+    cookieParser = require('cookie-parser');
     methodOverride = require('method-override'); // used to manipulate POST data
+
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(methodOverride(function (req, res) {
@@ -17,13 +19,17 @@ router.use(methodOverride(function (req, res) {
 router.route('/')
     .post(function (req, res) { // CONSIDER: can add a next parameter for next middleware to run in the middleware chain
         mongoose.model('User').findOne({ 'email': req.body.email }, 'password', function (err, user) {
-            console.log(user);
+            
+            // Parse cookies
+            console.log(req.cookies.user);
+
             if (err) return console.log(err);
             if (user) {
                 if (user.password === req.body.password) {
                     // correct username/password
-                    req.session.user = user;
-                    delete req.session.user.password;
+                    res.cookie('user', req.body.email);
+
+                    // may want to comment the below out
                     res.format({
                         json: function () {
                             res.json({ "reply": true });
