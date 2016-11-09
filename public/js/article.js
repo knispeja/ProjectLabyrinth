@@ -4,14 +4,12 @@
     var newArticle;
 
     function getallArticles() {
-        console.log("ran get all Articles");
         $.ajax({
             url: apiUrl,
             type: 'GET',
             dataType: 'JSON',
             success: function(data) {
                 if (data) {
-                    console.log(data);
                     displayArticles(data);
                 } else {
                     console.log("Articles not Found");

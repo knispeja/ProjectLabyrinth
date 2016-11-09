@@ -87,7 +87,6 @@ router.route('/:id/')
                         }
                     });
                 } else {
-                    console.log(article);
                     res.json(article);
                 }
             }

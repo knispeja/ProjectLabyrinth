@@ -21,7 +21,7 @@ router.route('/')
         mongoose.model('User').findOne({ 'email': req.body.email }, 'password', function (err, user) {
             
             // Parse cookies
-            console.log(req.cookies.user);
+            console.log("Current user cookie: " + req.cookies.user);
 
             if (err) return console.log(err);
             if (user) {

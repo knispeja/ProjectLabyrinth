@@ -461,7 +461,6 @@ function addEventListeners() {
 
 // Runs on load
 function init() {
-    console.log("IN INIT")
     canvas = document.getElementById("canvas");
     ctx = canvas.getContext("2d");
 

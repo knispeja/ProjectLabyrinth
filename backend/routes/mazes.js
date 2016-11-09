@@ -88,13 +88,7 @@ router.route('/:id/')
                         }
                     });
                 } else {
-                    console.log(maze);
-                    // res.status(204);
-                    //res.format({
-                    // json: function () {
                     res.json(maze);
-                    //}
-                    // });
                 }
             }
             );

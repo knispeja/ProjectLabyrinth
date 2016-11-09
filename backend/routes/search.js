@@ -18,7 +18,7 @@ router.use(methodOverride(function (req, res) {
 // Ready to build API
 router.route('/')
     .post(function (req, res) { // CONSIDER: can add a next parameter for next middleware to run in the middleware chain
-        console.log("Query: " + req.body.query);
+        console.log("Search query: " + req.body.query);
 
         var queryReg = new RegExp(req.body.query, 'i');
         mongoose.model('Maze').find({"title": queryReg}, function (err, mazes) {
