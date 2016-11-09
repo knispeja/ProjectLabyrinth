@@ -34,7 +34,7 @@ body {
 }
 
 #searchBox {
-    height: 15px;
+    height: 18px;
     vertical-align: middle;
     border-radius: 8px;
 }
@@ -45,6 +45,6 @@ body {
 
 .coloredStripe {
     margin-top: 15px;
-    border-top: 4px solid #314c77;
+    border-top: 6px solid #314c77;
     margin-bottom: 15px;
 }
