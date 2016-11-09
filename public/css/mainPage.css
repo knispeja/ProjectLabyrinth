@@ -21,3 +21,7 @@
     margin-right: auto;
     text-align: center;
 }
+
+#emptyDiv {
+    height: 50px;
+}
