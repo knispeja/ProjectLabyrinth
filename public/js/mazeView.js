@@ -50,7 +50,9 @@
         document.getElementById("title").textContent = maze.title;
         document.getElementById("desc").textContent = maze.text;
         $(".mazePic").attr("src", maze.image);
-        $('#rating').text(averageRatings(maze.ratings));
+        $("#rating").text(averageRatings(maze.ratings));
+        $("#download").attr("href", maze.image);
+        $("#download").attr("download", maze.title + ".jpg");
     }
 
     function averageRatings(ratings){
@@ -63,14 +65,11 @@
         }
         return sum / ratings.length + "//10";
     }
-    // Add download action to the download button
-    // document.getElementById("download").addEventListener('click', function () {
-    //     downloadMaze(this, 'maze.png');
-    // }, false);
 
     function loadMaze() {
         getMaze(window.location.search.substr(1), "load");
 
+        // Submit rating
         $('#submit').click(function () {
             getMaze(window.location.search.substr(1), "rating");
         });
