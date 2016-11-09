@@ -2,15 +2,15 @@
     "use strict";
     var apiUrl = "http://localhost:3000/mazes/";
 
-    function saveMaze(mazeID) {
+    function saveMaze(maze) {
         $.ajax({
-            url: apiUrl + mazeID,
+            url: apiUrl + maze._id,
             type: 'PUT',
             data: maze,
             dataType: 'JSON',
             success: function (data) {
                 if (data) {
-                    window.location.href = './index.html';
+                    $('#rating').text(averageRatings(data.ratings));
                     return false;
                 } else {
                     console.log("Maze not Found");
@@ -22,14 +22,20 @@
         });
     }
 
-    function getMaze(mazeID) {
+    function getMaze(mazeID, src) {
         $.ajax({
             url: apiUrl + mazeID,
             type: 'GET',
             dataType: 'JSON',
             success: function(data) {
                 if (data) {
-                    setMazeView(data);
+                    if(src==="load"){
+                        setMazeView(data);
+                    }
+                    else{
+                        data.ratings.push(parseFloat($('#ratings option:selected').text()));
+                        saveMaze(data);
+                    }
                 } else {
                     console.log("Cannot find maze.");
                 }
@@ -40,12 +46,12 @@
         });
     }
 
-    function setMazeView(article) {
-        document.getElementById("title").textContent = article.title;
-        document.getElementById("desc").textContent = article.text;
+    function setMazeView(maze) {
+        document.getElementById("title").textContent = maze.title;
+        document.getElementById("desc").textContent = maze.text;
         //still need to figure out how to insert images
-        $("#mazePic").attr("src", article.image);
-        $('#rating').text(averageRatings(article.ratings));
+        $("#mazePic").attr("src", maze.image);
+        $('#rating').text(averageRatings(maze.ratings));
     }
 
     function averageRatings(ratings){
@@ -58,14 +64,17 @@
         }
         return sum / ratings.length + "//10";
     }
-
     // Add download action to the download button
     // document.getElementById("download").addEventListener('click', function () {
     //     downloadMaze(this, 'maze.png');
     // }, false);
 
     function loadMaze() {
-        getMaze(window.location.search.substr(1));
+        getMaze(window.location.search.substr(1), "load");
+
+        $('#submit').click(function () {
+            getMaze(window.location.search.substr(1), "rating");
+        });
     }
     $(document).ready(loadMaze);
 })();
