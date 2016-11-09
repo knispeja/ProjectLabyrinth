@@ -20,8 +20,8 @@ var left;
 var right;
 
 var maze = [];
-var userLocation = {x:0, y:0};
-var originalLocation = {x:0, y:0};
+var userLocation = { x: 0, y: 0 };
+var originalLocation = { x: 0, y: 0 };
 var objectiveCell;
 var cols;
 var rows;
@@ -37,31 +37,31 @@ function Cell(type, x, y, color) {
     this.neighbors = [];
     this.accessibleNeighbors = [];
 
-    this.isObjective = function() {return this.type == OBJECTIVE_CELL;}
-    this.isObstacle = function() {return this.type == OBSTACLE_CELL;}
-    this.isEmpty = function() {return this.type == EMPTY_CELL;}
+    this.isObjective = function () { return this.type == OBJECTIVE_CELL; }
+    this.isObstacle = function () { return this.type == OBSTACLE_CELL; }
+    this.isEmpty = function () { return this.type == EMPTY_CELL; }
 
-    this.equals = function(other) {return this.x == other.x && this.y == other.y;}
+    this.equals = function (other) { return this.x == other.x && this.y == other.y; }
 
-    this.convertToEmpty = function() {
+    this.convertToEmpty = function () {
         this.type = EMPTY_CELL;
         this.color = EMPTY_COLOR;
     }
 
-    this.convertToObstacle = function() {
+    this.convertToObstacle = function () {
         this.type = OBSTACLE_CELL;
         this.color = OBSTACLE_COLOR;
     }
 
-    this.draw = function(drawColor = this.color) {
+    this.draw = function (drawColor = this.color) {
         ctx.fillStyle = drawColor;
         ctx.fillRect(this.x * CELL_LENGTH, this.y * CELL_LENGTH, CELL_LENGTH, CELL_LENGTH);
     }
 }
 
-function makeObstacleCell(x, y) {return new Cell(OBSTACLE_CELL, x, y, OBSTACLE_COLOR);}
-function makeObjectiveCell(x, y) {return new Cell(OBJECTIVE_CELL, x, y, OBJECTIVE_COLOR);}
-function makeEmptyCell(x, y) {return new Cell(EMPTY_CELL, x, y, EMPTY_COLOR);}
+function makeObstacleCell(x, y) { return new Cell(OBSTACLE_CELL, x, y, OBSTACLE_COLOR); }
+function makeObjectiveCell(x, y) { return new Cell(OBJECTIVE_CELL, x, y, OBJECTIVE_COLOR); }
+function makeEmptyCell(x, y) { return new Cell(EMPTY_CELL, x, y, EMPTY_COLOR); }
 
 function getCellAtUserLocation() {
     return maze[userLocation.y][userLocation.x];
@@ -89,11 +89,11 @@ function generateMazeKruskal(m) {
     var edges = [];
 
     // Place initial grid and fill edges array
-    for(var row=0; row<rows; row++) {
-        for(var col=0; col<cols; col++) {
+    for (var row = 0; row < rows; row++) {
+        for (var col = 0; col < cols; col++) {
             var rowMod = (row % 2 == 0);
             var colMod = (col % 2 == 0);
-            if(rowMod || colMod) {
+            if (rowMod || colMod) {
                 m[row][col].convertToObstacle();
                 if (rowMod != colMod) edges.push(m[row][col]);
             }
@@ -103,44 +103,44 @@ function generateMazeKruskal(m) {
 
                 // We don't have to update quite as many references if we store the sets in an object
                 // rather than just as a simple array. See note labeled @setObjects below...
-                m[row][col].containingSet = {set:c};
+                m[row][col].containingSet = { set: c };
             }
         }
     }
-    
+
     // Generate graph
     generateGraphForMaze(m);
 
     // Loop over the list of relevant edges
-    while(edges.length > 0) {
+    while (edges.length > 0) {
 
         // Choose a random edge and remove it from the list of edges
         var edgeInd = randomIndexOf(edges);
         var edge = edges[edgeInd];
         edges.splice(edgeInd, 1);
-        
+
         // Gather all empty cell neighbors in n0 and n1
         var n0 = false;
         var n1 = false;
         var extra = false;
-        for(var i=0; i<edge.accessibleNeighbors.length; i++) {
+        for (var i = 0; i < edge.accessibleNeighbors.length; i++) {
             var neighbor = edge.accessibleNeighbors[i];
 
-            if(!n0) n0 = neighbor;
-            else if(!n1) n1 = neighbor;
+            if (!n0) n0 = neighbor;
+            else if (!n1) n1 = neighbor;
             else extra = true;
         }
 
         // Consider tearing the wall down only if there are exactly
         // TWO empty neighbors -- any less/more and it wouldn't make sense
-        if(n0 && n1 && !extra) {
+        if (n0 && n1 && !extra) {
             var setsAreEqual = true;
             var set0 = n0.containingSet.set;
             var set1 = n1.containingSet.set;
 
             // Check if the spaces are joined or not
-            if(set0 !== set1) {
-                
+            if (set0 !== set1) {
+
                 m[edge.y][edge.x].convertToEmpty();
 
                 // Array of length 2, the smaller array is at 0, bigger is at 1
@@ -154,7 +154,7 @@ function generateMazeKruskal(m) {
                 // update half at the most -- we can force all tiles in the same set to have
                 // the same containingSet object, so that's the only reference we need to update
                 setsBySize[1][0].containingSet.set = set0.concat(set1); // instantly update all references in the bigger set
-                for(var i=0; i<setsBySize[0].length; i++) // update references in the smaller set
+                for (var i = 0; i < setsBySize[0].length; i++) // update references in the smaller set
                     setsBySize[0][i].containingSet = setContainer;
             }
         }
@@ -172,9 +172,9 @@ function generateMazeKruskal(m) {
 function generateMazeRecursiveBacktracking(m) {
 
     // Place initial grid
-    for(var row=0; row<rows; row++) {
-        for(var col=0; col<cols; col++) {
-            if(row % 2 == 0 || col % 2 == 0)
+    for (var row = 0; row < rows; row++) {
+        for (var col = 0; col < cols; col++) {
+            if (row % 2 == 0 || col % 2 == 0)
                 m[row][col].convertToObstacle();
             else
                 m[row][col].visited = false;
@@ -186,9 +186,9 @@ function generateMazeRecursiveBacktracking(m) {
 
     // Get a random blank space as a starting point
     // This method is faster/more memory efficient than storing all blanks in an array
-    var numBlanks = ((cols - 1)*(rows - 1))/4; // assumes odd rows/cols
-    var blankCols = (cols - 1)/2;
-    var blankRows = (rows - 1)/2;
+    var numBlanks = ((cols - 1) * (rows - 1)) / 4; // assumes odd rows/cols
+    var blankCols = (cols - 1) / 2;
+    var blankRows = (rows - 1) / 2;
 
     // Faster than running Math.rand() twice for cols and rows. Instead
     // I just generate one number using the total blanks and derive the
@@ -204,12 +204,12 @@ function generateMazeRecursiveBacktracking(m) {
 
         var shuffledNeighbors = shuffleArray(cell.neighbors);
 
-        for(var i=0; i<shuffledNeighbors.length; i++) {
+        for (var i = 0; i < shuffledNeighbors.length; i++) {
             var neighbor = shuffledNeighbors[i];
-            if(neighbor.isObstacle()) {
-                for(var j=0; j<neighbor.accessibleNeighbors.length; j++) {
+            if (neighbor.isObstacle()) {
+                for (var j = 0; j < neighbor.accessibleNeighbors.length; j++) {
                     var adjacentEmptyCell = neighbor.accessibleNeighbors[j];
-                    if(!adjacentEmptyCell.visited) {
+                    if (!adjacentEmptyCell.visited) {
                         neighbor.convertToEmpty();
                         carvePassages(adjacentEmptyCell);
                     }
@@ -226,34 +226,34 @@ function generateMaze() {
     var newMaze = [];
 
     // Generate empty maze
-    for(var row=0; row<rows; row++) {
+    for (var row = 0; row < rows; row++) {
         var newRow = [];
-        for(var col=0; col<cols; col++) {
+        for (var col = 0; col < cols; col++) {
             newRow.push(makeEmptyCell(col, row));
         }
         newMaze.push(newRow);
     }
 
     // Generate maze innards -- these methods will not place starting/ending pts
-    if(document.getElementById("radioKruskal").checked)
+    if (document.getElementById("radioKruskal").checked)
         generateMazeKruskal(newMaze);
     else
         generateMazeRecursiveBacktracking(newMaze);
 
     // Place starting point along west wall
-    for(var row=1; row<rows; row++) {
-        if(newMaze[row][1].isEmpty()) {
-            userLocation = {x: 1, y:row};
+    for (var row = 1; row < rows; row++) {
+        if (newMaze[row][1].isEmpty()) {
+            userLocation = { x: 1, y: row };
             originalLocation = userLocation;
             break;
         }
     }
-    
+
     // Place objective along east wall
-    for(var row=rows-2; row>=0; row--) {
-        if(newMaze[row][cols-2].isEmpty()) {
-            objectiveCell = makeObjectiveCell(cols-1, row);
-            newMaze[row][cols-1] = objectiveCell;
+    for (var row = rows - 2; row >= 0; row--) {
+        if (newMaze[row][cols - 2].isEmpty()) {
+            objectiveCell = makeObjectiveCell(cols - 1, row);
+            newMaze[row][cols - 1] = objectiveCell;
             break;
         }
     }
@@ -263,8 +263,8 @@ function generateMaze() {
 
 // Draw the entire maze in the default color
 function drawMaze() {
-    for(var row=0; row<rows; row++) {
-        for(var col=0; col<cols; col++) {
+    for (var row = 0; row < rows; row++) {
+        for (var col = 0; col < cols; col++) {
             maze[row][col].draw();
         }
     }
@@ -284,8 +284,8 @@ function clearDrawnPlayerPosition() {
 function reactToUserInput() {
 
     // Ignore conflicting input
-    if(!((up && down) || (left && right))) {
-        
+    if (!((up && down) || (left && right))) {
+
         // Remove player from old position
         clearDrawnPlayerPosition();
 
@@ -293,19 +293,19 @@ function reactToUserInput() {
         var newCell;
 
         // Determine new location if there is one...
-        if(up && userLocation.y != 0) newCell = maze[userLocation.y - 1][userLocation.x];
-        else if(down && userLocation.y != cols - 1) newCell = maze[userLocation.y + 1][userLocation.x];
+        if (up && userLocation.y != 0) newCell = maze[userLocation.y - 1][userLocation.x];
+        else if (down && userLocation.y != cols - 1) newCell = maze[userLocation.y + 1][userLocation.x];
 
-        if(newCell && !newCell.isObstacle()) userLocation = {x: newCell.x, y: newCell.y};
+        if (newCell && !newCell.isObstacle()) userLocation = { x: newCell.x, y: newCell.y };
         else {
-            if(left) newCell = maze[userLocation.y][userLocation.x - 1];
-            else if(right) newCell = maze[userLocation.y][userLocation.x + 1];
+            if (left) newCell = maze[userLocation.y][userLocation.x - 1];
+            else if (right) newCell = maze[userLocation.y][userLocation.x + 1];
 
-            if(newCell && !newCell.isObstacle()) userLocation = {x: newCell.x, y: newCell.y};
+            if (newCell && !newCell.isObstacle()) userLocation = { x: newCell.x, y: newCell.y };
         }
 
         // Player moved to a valid space
-        if(newCell && !newCell.isObstacle() && !newCell.equals(oldCell)) {
+        if (newCell && !newCell.isObstacle() && !newCell.equals(oldCell)) {
 
             // Update steps and leave a trail behind
             stepsTaken++;
@@ -314,7 +314,7 @@ function reactToUserInput() {
             // TODO: make trail darken upon backtracking
 
             // Player reached the objective
-            if(newCell.isObjective()) {
+            if (newCell.isObjective()) {
                 var message = "Congratulations, you solved the maze!";
                 message += "\nSteps taken:  " + stepsTaken;
                 message += "\nOptimal path: " + optimalPath;
@@ -335,7 +335,7 @@ function resetMaze(redraw = true) {
     stepsTaken = 0;
     userLocation = originalLocation;
 
-    if(redraw) drawMaze();
+    if (redraw) drawMaze();
 }
 
 // If the inputs are appropriate, purges the current maze and generates a new one in its place.
@@ -350,11 +350,11 @@ function remakeMaze() {
     rows = document.getElementById("cellHeight").value;
 
     // Limit numbers to odd values
-    if(cols % 2 == 0) cols++;
-    if(rows % 2 == 0) rows++;
+    if (cols % 2 == 0) cols++;
+    if (rows % 2 == 0) rows++;
 
     // Prevent the user from trying to generate anything too small
-    if(cols < MIN_MAZE_DIMENSION || rows < MIN_MAZE_DIMENSION) {
+    if (cols < MIN_MAZE_DIMENSION || rows < MIN_MAZE_DIMENSION) {
         alert("Maze cannot be smaller than " + MIN_MAZE_DIMENSION + " cells in any dimension.");
         return;
     }
@@ -377,18 +377,18 @@ function onKeyDown(event) {
     var keyCode = event.keyCode;
 
     // Always respond to enter being pressed by regenerating the maze
-    if(keyCode == 13) {
+    if (keyCode == 13) {
         remakeMaze();
         return;
     }
 
     // Don't capture input if the user is already in a text box
-    if(document.activeElement instanceof HTMLInputElement && document.activeElement.type == "text") {
+    if (document.activeElement instanceof HTMLInputElement && document.activeElement.type == "text") {
         return;
     }
 
     // Respond to directional inputs
-    switch(keyCode) {     
+    switch (keyCode) {
         case 38:  //up arrow
         case 87:  //w
             event.preventDefault();
@@ -417,7 +417,7 @@ function onKeyUp(event) {
     var keyCode = event.keyCode;
 
     // Always keep track of direction inputs being released
-    switch(keyCode){
+    switch (keyCode) {
         case 38:  //up arrow
         case 87:  //w
             up = false;
@@ -450,7 +450,7 @@ function addEventListeners() {
     document.getElementById("resetBtn").addEventListener('click', resetMaze, false);
 
     // Add download action to the download button
-    document.getElementById("download").addEventListener('click', function() {
+    document.getElementById("download").addEventListener('click', function () {
         downloadMaze(this, 'maze.png');
     }, false);
 
@@ -461,6 +461,7 @@ function addEventListeners() {
 
 // Runs on load
 function init() {
+    console.log("IN INIT")
     canvas = document.getElementById("canvas");
     ctx = canvas.getContext("2d");
 
@@ -469,4 +470,6 @@ function init() {
     reactToUserInput();
 }
 
-window.onload = init;
+document.addEventListener("DOMContentLoaded", function () {
+    init();
+});
