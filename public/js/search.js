@@ -40,8 +40,7 @@
 
     // URL formatted like "http://normal/url?QUERY" where QUERY is the search query
     function getSearchQuery() {
-        var url = decodeURI(location.href); 
-        return url.substring(url.indexOf("?") + 1);
+        return decodeURI(window.location.search.substr(1));
     }
 
     var query = getSearchQuery();
