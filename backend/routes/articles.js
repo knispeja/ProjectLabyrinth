@@ -17,13 +17,17 @@ router.use(methodOverride(function (req, res) {
 router.route('/')
     // GET all Articles
     .get(function (req, res, next) {
-        mongoose.model('Article').find({}, function (err, articles) {
-            if (err) {
-                return console.log(err); 
-            } else {
-                res.json(articles);
+        mongoose.model('Article').find(
+            {}, 'title image text dateTime', 
+            {sort:{dateTime: -1}}, 
+            function (err, articles) {
+                if (err) {
+                    return console.log(err); 
+                } else {
+                    res.json(articles);
+                }
             }
-        });
+        );
     })
     .post(function (req, res) { 
         mongoose.model('Article').create({
