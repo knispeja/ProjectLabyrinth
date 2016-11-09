@@ -6,7 +6,7 @@
         $.ajax({
             url: apiUrl + maze._id,
             type: 'PUT',
-            data: maze,
+            data: JSON.stringify(maze),
             dataType: 'JSON',
             success: function (data) {
                 if (data) {
@@ -33,7 +33,7 @@
                         setMazeView(data);
                     }
                     else{
-                        data.ratings.push(parseFloat($('#ratings option:selected').text()));
+                        data.ratings.push({rating: parseFloat($('#ratings option:selected').text()), userID: 0});
                         saveMaze(data);
                     }
                 } else {
