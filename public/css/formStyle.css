@@ -1,5 +1,5 @@
 body {
-    background-color: #7f8183;
+    background-color: #cdd5d6;
     margin: 0px;
 }
 
@@ -81,4 +81,11 @@ body {
 
 #noActLink {
     margin-left: 130px;
+}
+
+#description {
+    width: 380px;
+    max-width: 380px;
+    height: 150px;
+    max-height: 150px;
 }

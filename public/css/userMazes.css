@@ -111,3 +111,10 @@ h1 {
     border-radius: 8px;
     width: 230px;
 }
+
+#mazeDesc {
+    width: 230px;
+    height: 100px;
+    max-width: 230px;
+    max-height: 100px;
+}
