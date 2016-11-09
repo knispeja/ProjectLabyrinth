@@ -18,7 +18,7 @@ router.route('/')
     // GET all Mazes
     .get(function (req, res, next) {
         mongoose.model('Maze').find(
-            {}, "title image text dateTime ratings",
+            {}, "title image text dateTime",
             {sort:{dateTime: -1}}, // sort by datetime desc, can't sort by rating easily (it's an array)
             function (err, mazes) {
                 if (err) {

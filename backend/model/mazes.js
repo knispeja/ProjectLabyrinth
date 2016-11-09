@@ -1,15 +1,10 @@
 var mongoose = require('mongoose');
 
-var RatingSchema = new mongoose.Schema({
-    rating: Number,
-    userID: Number
-});
 var MazeSchema = new mongoose.Schema({
     title: String,
     image: String,
     text: String,
-    dateTime: Date,
-    ratings: [RatingSchema]
+    dateTime: Date
 });
 
 mongoose.model('Maze', MazeSchema);
