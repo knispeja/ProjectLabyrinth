@@ -2,27 +2,6 @@
     "use strict";
     var apiUrl = "http://localhost:3000/articles/";
     var newArticle;
-    var Allarticles;
-    var imageFile;
-
-    function createArticle(article) {
-        $.ajax({
-            url: apiUrl,
-            type: "POST",
-            data: article,
-            dataType: 'JSON',
-            success: function(data) {
-                if (data) {
-                    window.location.href = "./homePage.html";
-                } else {
-                    console.log("Article could not be created");
-                }
-            },
-            error: function(request, status, error) {
-                console.log(error, status, request);
-            }
-        });
-    }
 
     function getallArticles() {
         console.log("ran get all Articles");
@@ -33,8 +12,7 @@
             success: function(data) {
                 if (data) {
                     console.log(data);
-                    Allarticles = data;
-                    displayArticles(Allarticles);
+                    displayArticles(data);
                 } else {
                     console.log("Articles not Found");
                 }
@@ -105,31 +83,5 @@
         });
     }
 
-    $('#submit').click(function() {
-        var article = {
-            title: $("#articleTitle").val(),
-            image: imageFile,
-            text: $("#description").val(),
-            dateTime: new Date()
-        }
-        getallArticles();
-        window.location.href = "./homePage.html";
-    });
-
-    $("#imageUploaded").change(function() {
-        var file = $("#imageUploaded")[0].files[0];
-        var reader = new FileReader();
-        reader.addEventListener('load', function(event) {
-            imageFile = event.target.result;
-        });
-        reader.readAsDataURL(file);
-    });
-
-    $(document).ready(function() {
-        {
-            if (window.location.href == "file:///C:/Users/shishok/Desktop/ProjectLabyrinth/public/homePage.html" || window.location.href == "file:///C:/Users/shishok/Desktop/ProjectLabyrinth/public/archivePage.html") {
-                getallArticles();
-            }
-        }
-    });
+    $(document).ready(getallArticles);
 })(); 

@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var ArticleSchema = new mongoose.Schema({
     title: String,
-    image: Buffer,
+    image: String,
     text: String,
     dateTime: Date
 
