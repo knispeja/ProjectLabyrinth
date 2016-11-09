@@ -9,3 +9,8 @@
 #upMazeTitle {
     font-family: Arial, Helvetica, sans-serif;
 }
+
+.mazePic {
+    max-width: 400px;
+    max-height: 400px;
+}
