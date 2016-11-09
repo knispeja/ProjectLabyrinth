@@ -25,14 +25,16 @@
     }
 
     function getallArticles() {
+        console.log("ran get all Articles");
         $.ajax({
             url: apiUrl,
             type: 'GET',
             dataType: 'JSON',
             success: function(data) {
                 if (data) {
+                    console.log(data);
                     Allarticles = data;
-                    displayArticles(AllBooks);
+                    displayArticles(Allarticles);
                 } else {
                     console.log("Articles not Found");
                 }
@@ -63,6 +65,7 @@
 
     function displayArticles(allOfThem) {
         allOfThem.forEach(function(article) {
+            console.log(article);
             createArticleOnPage(article);
         });
     }
@@ -122,4 +125,11 @@
         reader.readAsDataURL(file);
     });
 
+    $(document).ready(function() {
+        {
+            if (window.location.href == "file:///C:/Users/shishok/Desktop/ProjectLabyrinth/public/homePage.html" || window.location.href == "file:///C:/Users/shishok/Desktop/ProjectLabyrinth/public/archivePage.html") {
+                getallArticles();
+            }
+        }
+    });
 })(); 
