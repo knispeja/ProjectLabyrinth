@@ -1,7 +1,8 @@
-(function () {
+(function() {
     "use strict";
     var apiUrl = "http://localhost:3000/articles/";
     var newArticle;
+    var Allarticles;
     var imageFile;
 
     function createArticle(article) {
@@ -10,14 +11,33 @@
             type: "POST",
             data: article,
             dataType: 'JSON',
-            success: function (data) {
+            success: function(data) {
                 if (data) {
                     window.location.href = "./homePage.html";
                 } else {
                     console.log("Article could not be created");
                 }
             },
-            error: function (request, status, error) {
+            error: function(request, status, error) {
+                console.log(error, status, request);
+            }
+        });
+    }
+
+    function getallArticles() {
+        $.ajax({
+            url: apiUrl,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function(data) {
+                if (data) {
+                    Allarticles = data;
+                    displayArticles(AllBooks);
+                } else {
+                    console.log("Books not Found");
+                }
+            },
+            error: function(request, status, error) {
                 console.log(error, status, request);
             }
         });
@@ -28,16 +48,22 @@
             url: apiUrl + article._id,
             type: 'GET',
             dataType: 'JSON',
-            success: function (data) {
+            success: function(data) {
                 if (data) {
                     newArticle = data;
                 } else {
                     console.log("Cannot find article.");
                 }
             },
-            error: function (request, status, error) {
+            error: function(request, status, error) {
                 console.log(error, status, request);
             }
+        });
+    }
+
+    function displayArticles(allOfThem) {
+        allOfThem.forEach(function(article) {
+            createArticleOnPage(article);
         });
     }
 
@@ -64,7 +90,7 @@
     // results will be an array of objects that we will display on the search results page
     // assuming results are already filtered
     function showSearchResults(results) {
-        results.forEach(function (result) {
+        results.forEach(function(result) {
             $("$searchResults").append(
                 "<span class=\"result\">" +
                 "<a href=\"articleView.html\">" +
@@ -76,22 +102,21 @@
         });
     }
 
-    $('#submit').click(function () {
+    $('#submit').click(function() {
         var article = {
             title: $("#articleTitle").val(),
             image: imageFile,
             text: $("#description").val(),
             dateTime: new Date()
         }
-        createArticle(article);
-        createArticleOnPage(article);
+        getallArticles();
         window.location.href = "./homePage.html";
     });
 
-    $("#imageUploaded").change(function () {
+    $("#imageUploaded").change(function() {
         var file = $("#imageUploaded")[0].files[0];
         var reader = new FileReader();
-        reader.addEventListener('load', function (event) {
+        reader.addEventListener('load', function(event) {
             imageFile = event.target.result;
         });
         reader.readAsDataURL(file);
