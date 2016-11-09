@@ -34,7 +34,7 @@
                     Allarticles = data;
                     displayArticles(AllBooks);
                 } else {
-                    console.log("Books not Found");
+                    console.log("Articles not Found");
                 }
             },
             error: function(request, status, error) {
