@@ -10,7 +10,8 @@
 }
 
 #canvas {
-    margin-left: 30px;
+    margin-left: 60px;
+
 }
 
 .btn {
@@ -42,9 +43,21 @@
     width: 460px;
     padding: 0px 5px 5px 5px;
     justify-content: center;
+    border-radius: 10px;
 }
 
 #diffText {
     font-family: Arial, Helvetica, sans-serif;
     margin: 20px 0px 10px 20px;
+}
+
+#cellHeight, #cellWidth {
+    border-radius: 5px;
+    padding: 2px;
+    height: 20px;
+    width: 165px;
+}
+
+#resetBtn {
+    margin-bottom: 60px;
 }
