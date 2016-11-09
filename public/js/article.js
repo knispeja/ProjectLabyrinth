@@ -23,27 +23,8 @@
         });
     }
 
-    function getArticle(article) {
-        $.ajax({
-            url: apiUrl + article._id,
-            type: 'GET',
-            dataType: 'JSON',
-            success: function(data) {
-                if (data) {
-                    newArticle = data;
-                } else {
-                    console.log("Cannot find article.");
-                }
-            },
-            error: function(request, status, error) {
-                console.log(error, status, request);
-            }
-        });
-    }
-
     function displayArticles(allOfThem) {
         allOfThem.forEach(function(article) {
-            console.log(article);
             createArticleOnPage(article);
         });
     }
@@ -56,16 +37,8 @@
             "<img class=\"mazePic\" src=\"" +
             article.image + "\" alt=\"Picture goes here\">" +
             "<p>" + article.text.substring(0, 50) + "...</p>" +
-            "<a href=\"articleView.html\"><div id=\"articleReadMore\">Read More!</div></a></div>"
+            "<a href=\"articleView.html?" + article._id+"\"><div id=\"articleReadMore\">Read More!</div></a></div>"
         );
-    }
-
-    // use this for setting the article up in the articleView page
-    function setArticleView(article) {
-        document.getElementById("articleTitle").textContent = article.title;
-        document.getElementById("articleDesc").textContent = article.text;
-        //still need to figure out how to insert images
-        $("#articlePic").attr("src", "data:image/jpg;base64," /*+ something here?*/);
     }
 
     // results will be an array of objects that we will display on the search results page
