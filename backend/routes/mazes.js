@@ -17,13 +17,17 @@ router.use(methodOverride(function (req, res) {
 router.route('/')
     // GET all Mazes
     .get(function (req, res, next) {
-        mongoose.model('Maze').find({}, function (err, mazes) {
-            if (err) {
-                return console.log(err); // CONSIDER: Might want to call next with error.  can add status code and error message.
-            } else {
-                res.json(mazes);
+        mongoose.model('Maze').find(
+            {}, "title image text dateTime ratings",
+            {sort:{dateTime: -1}}, // sort by datetime desc, can't sort by rating easily (it's an array)
+            function (err, mazes) {
+                if (err) {
+                    return console.log(err);
+                } else {
+                    res.json(mazes);
+                }
             }
-        });
+        );
     })
     .post(function (req, res) {
         mongoose.model('Maze').create({

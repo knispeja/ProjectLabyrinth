@@ -19,7 +19,7 @@ router.route('/')
     .get(function (req, res, next) {
         mongoose.model('Article').find(
             {}, 'title image text dateTime', 
-            {sort:{dateTime: -1}}, 
+            {sort:{dateTime: -1}}, // sort articles newest to oldest
             function (err, articles) {
                 if (err) {
                     return console.log(err); 

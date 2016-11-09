@@ -4,7 +4,6 @@ var ArticleSchema = new mongoose.Schema({
     image: String,
     text: String,
     dateTime: Date
-
 });
 
 mongoose.model('Article', ArticleSchema);

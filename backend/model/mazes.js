@@ -9,7 +9,6 @@ var MazeSchema = new mongoose.Schema({
     image: String,
     text: String,
     dateTime: Date,
-    // userID: Number,
     ratings: [RatingSchema]
 });
 
