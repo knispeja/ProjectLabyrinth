@@ -53,7 +53,7 @@ h1 {
     height: 25px;
 }
 
-#submit:hover {
+#submit:hover, #fileUp:hover {
     background-color: lightskyblue;
 }
 
