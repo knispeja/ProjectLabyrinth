@@ -2,8 +2,7 @@
 
     var apiUrl = "http://localhost:3000/mazes/";
 
-
-    function search() {
+    function search(query) {
         $.ajax({
             url: apiUrl + maze._id,
             type: 'PUT',
@@ -22,4 +21,14 @@
             }
         });
     }
+
+    // URL formatted like "http://normal/url?QUERY" where QUERY is the search query
+    function getSearchQuery() {
+        var url = location.href; 
+        return url.substring(url.indexOf("?") + 1);
+    }
+
+    var query = getSearchQuery();
+    document.title = "Search for: \"" + query + "\"";
+    search(query);
 })();
