@@ -5,16 +5,14 @@
     var imageFile;
     // make ajax call to update this maze
 
-    function getMaze() {
+    function getMazes() {
         $.ajax({
             url: apiUrl,
             type: 'GET',
             dataType: 'JSON',
             success: function (data) {
                 if (data) {
-                    allMazes = data;
-                    //TODO: create a display mazes function
-                    displayMazes(allMazes);
+                    displayMazes(data);
                 } else {
                     console.log("Maze not Found");
                 }
@@ -23,6 +21,11 @@
                 console.log(error, status, request);
             }
         });
+    }
+    function displayMazes(mazes){
+        for(var i =0; i<mazes.length; i++){
+            addMazeToPage(mazes[i]);
+        }
     }
 
     function saveMaze(maze) {
@@ -108,6 +111,7 @@
         };
         createMaze(mazeData);
     });
+
     $("#imageUploaded").change(function (){
         var file = $("#imageUploaded")[0].files[0];
         var reader = new FileReader();
@@ -116,4 +120,6 @@
         });
         reader.readAsDataURL(file);
     });
+    
+    $(document).ready(getMazes);
 })();
