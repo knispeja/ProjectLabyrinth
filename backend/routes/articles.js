@@ -19,7 +19,7 @@ router.route('/')
     .get(function (req, res, next) {
         mongoose.model('Article').find({}, function (err, articles) {
             if (err) {
-                return console.log(err); // CONSIDER: Might want to call next with error.  can add status code and error message.
+                return console.log(err); 
             } else {
                 res.format({
                     json: function () {
@@ -29,16 +29,15 @@ router.route('/')
             }
         });
     })
-    .post(function (req, res) { // CONSIDER: can add a next parameter for next middleware to run in the middleware chain
+    .post(function (req, res) { 
         mongoose.model('Article').create({
-            // TODO: add schema here
             title: req.body.title,
             image: req.body.image,
             text: req.body.text,
             dateTime: req.body.dateTime
         }, function (err, article) {
             if (err) {
-                res.send('Problem adding article to db.'); // CONSIDER: Might want to call next with error.  can add status code and error message.
+                res.send('Problem adding article to db.'); 
             } else {
                 res.format({
                     json: function () {

@@ -2,8 +2,7 @@ var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'), //need mongodb connection
     bodyParser = require('body-parser'), // parse info from POST data
-    methodOverride = require('method-override'), // used to manipulate POST data
-    fs = require('fs'); //used to translate image into buffer
+    methodOverride = require('method-override'); // used to manipulate POST data
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(methodOverride(function (req, res) {
