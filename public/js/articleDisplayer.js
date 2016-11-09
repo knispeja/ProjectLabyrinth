@@ -12,6 +12,6 @@ function createArticleOnPage(article) {
         "<img class=\"mazePic\" src=\"" +
         article.image + "\" alt=\"Picture goes here\">" +
         "<p>" + article.text.substring(0, 50) + "...</p>" +
-        "<a href=\"articleView.html\"><div id=\"articleReadMore\">Read More!</div></a></div>"
+        "<a href=\"articleView.html?" + article._id + "\"><div id=\"articleReadMore\">Read More!</div></a></div>"
     );
 }
