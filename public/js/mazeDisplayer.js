@@ -9,7 +9,7 @@ function addMazeToPage(maze) {
     $("#mazes").append(
         "<span class=\"mazeEntry\"> <div class=\"uploadedMaze\" id=\""+
         maze._id + "\"> <img class=\"mazePic\" src=\"" +
-        maze.image + "\" alt=\"Maze picture\"><br/><p id=\"mazeTitle\">" +
+        maze.image + "\" alt=\"Maze picture\"><br/><p id=\"upMazeTitle\">" +
         maze.title + "</p></div></span>"
     );
 }
