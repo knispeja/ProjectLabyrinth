@@ -30,7 +30,7 @@ router.route('/')
             }
         });
     })
-    .post(function (req, res) { // CONSIDER: can add a next parameter for next middleware to run in the middleware chain
+    .post(function (req, res) {
         mongoose.model('Maze').create({
             title: req.body.title,
             image: req.body.image,
@@ -40,7 +40,7 @@ router.route('/')
             ratings: req.body.ratings
         }, function (err, maze) {
             if (err) {
-                res.send('Problem adding maze to db.'); // CONSIDER: Might want to call next with error.  can add status code and error message.
+                res.send('Problem adding maze to db.');
             } else {
                 res.format({
                     json: function () {

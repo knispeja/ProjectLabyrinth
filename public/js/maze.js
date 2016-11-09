@@ -55,6 +55,7 @@
             success: function (data) {
                 if (data) {
                     addMazeToPage(data);
+                    $('form')[1].reset();
                     return false;
                 } else {
                     console.log("Maze not Created/Retrived");
@@ -63,8 +64,6 @@
             error: function (request, status, error) {
                 console.log(error, status, request);
             }
-            // processData: false,
-            // contentType: false
         });
     }
 
