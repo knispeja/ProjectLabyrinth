@@ -10,7 +10,8 @@
             dataType: 'JSON',
             success: function (data) {
                 if (data) {
-                    displayMazes(data.reply);
+                    displayMazes(data.mazes);
+                    showArticleSearchResults(data.articles);
                     return false;
                 } else {
                     console.log("Maze not Found");

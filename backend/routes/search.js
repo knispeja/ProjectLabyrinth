@@ -19,12 +19,19 @@ router.use(methodOverride(function (req, res) {
 router.route('/')
     .post(function (req, res) { // CONSIDER: can add a next parameter for next middleware to run in the middleware chain
         console.log("Query: " + req.body.query);
-        mongoose.model('Maze').find({"title": new RegExp(req.body.query, 'i')}, function (err, mazes) {
+
+        var queryReg = new RegExp(req.body.query, 'i');
+        mongoose.model('Maze').find({"title": queryReg}, function (err, mazes) {
+            mongoose.model('Article').find({"title": queryReg}, function(err, articles) {
             if(err) {console.log(err);}
-            res.format({
-                json: function () {
-                    res.json({reply: mazes});
-                }
+                res.format({
+                    json: function () {
+                        res.json({
+                            mazes: mazes,
+                            articles: articles
+                        });
+                    }
+                });
             });
         });
     });
