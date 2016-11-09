@@ -60,6 +60,9 @@
     }
 
     // Add download action to the download button
+    // document.getElementById("download").addEventListener('click', function () {
+    //     downloadMaze(this, 'maze.png');
+    // }, false);
 
     function loadMaze() {
         getMaze(window.location.search.substr(1));
