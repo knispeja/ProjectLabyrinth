@@ -66,7 +66,7 @@
         for (var i = 0; i<ratings.length; i++){
             sum+=ratings[i].rating;
         }
-        return sum / ratings.length + "//10";
+        return (sum / ratings.length).toFixed(1) + "/10";
     }
 
     function loadMaze() {
