@@ -64,7 +64,7 @@
         }
         var sum = 0;
         for (var i = 0; i<ratings.length; i++){
-            sum+=ratings[i];
+            sum+=ratings[i].rating;
         }
         return sum / ratings.length + "//10";
     }
