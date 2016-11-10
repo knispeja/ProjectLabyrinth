@@ -6,7 +6,7 @@
         $.ajax({
             url: apiUrl + maze._id,
             type: 'PUT',
-            data: JSON.stringify(maze),
+            data: maze,
             dataType: 'JSON',
             success: function (data) {
                 if (data) {
@@ -33,8 +33,11 @@
                         setMazeView(data);
                     }
                     else{
-                        data.ratings.push({rating: parseFloat($('#ratings option:selected').text()), userID: 0});
-                        saveMaze(data);
+                        saveMaze({
+                            _id: data._id,
+                            rating: parseFloat($('#ratings option:selected').text()),
+                            userID: 0
+                        });
                     }
                 } else {
                     console.log("Cannot find maze.");
