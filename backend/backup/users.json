@@ -1,3 +1,0 @@
-{"_id":{"$oid":"581f8a7d304c5c62d89ade09"},"__v":0}
-{"_id":{"$oid":"581e370226e4bc2ed81feee1"},"email":"more@testing.net","password":"success","isAdmin":false,"__v":0}
-{"_id":{"$oid":"58222f6b76375f96f40ebe2e"},"email":"test@test.com","password":"password","isAdmin":false,"__v":0}
