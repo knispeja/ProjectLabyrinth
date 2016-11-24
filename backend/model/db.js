@@ -5,6 +5,9 @@ var mongoose = require('mongoose');
 // message and callback function
 var gracefulShutdown;
 var dbURI = 'mongodb://localhost/Labyrinth';
+if (process.env.NODE_ENV === 'production') {
+    dbURI = process.env.MLAB_URI;
+}
 mongoose.connect(dbURI);
 
 // Emulating disconnection events on Windows
